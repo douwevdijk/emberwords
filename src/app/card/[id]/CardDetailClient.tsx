@@ -40,7 +40,11 @@ export default function CardDetailClient({ card }: Props) {
 
   // Scroll to top when view changes
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Also scroll any overflow containers
+    document.querySelectorAll('.overflow-auto').forEach(el => {
+      el.scrollTop = 0;
+    });
   }, [viewState]);
 
   const deepDive = card.deepDive || null;
@@ -175,17 +179,8 @@ export default function CardDetailClient({ card }: Props) {
         >
           {/* FRONT - White */}
           <div className="absolute inset-0 backface-hidden bg-white overflow-auto">
-            <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-100 px-4 py-3 flex justify-end items-center">
-              <button
-                onClick={(e) => { e.stopPropagation(); handleShare(); }}
-                className="text-stone-500 text-sm flex items-center gap-2 hover:text-amber-500 transition-colors"
-              >
-                <Copy size={16} />
-                Kopieer link
-              </button>
-            </div>
             <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
-            <div className="flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 min-h-[calc(100vh-57px)] p-8">
+            <div className="flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 min-h-screen p-8">
               <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">{card.country}</p>
               <h1 className="text-5xl font-serif text-stone-900 mb-2 text-center">{card.word}</h1>
               {card.pronunciation && (
