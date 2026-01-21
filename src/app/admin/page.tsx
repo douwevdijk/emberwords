@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, BookOpen } from 'lucide-react';
+import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, BookOpen, Copy, QrCode, X, Download } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { getAllMemories, getAllComments, deleteMemory, deleteComment } from '@/lib/memoryService';
 import { getAllWords, saveWord, deleteWord } from '@/lib/wordService';
 import { generateWordCard } from '@/lib/geminiService';
@@ -35,6 +36,47 @@ export default function AdminPage() {
     id: string;
     name: string;
   }>({ isOpen: false, type: 'memory', id: '', name: '' });
+
+  const [qrModal, setQrModal] = useState<{ isOpen: boolean; word: WordCard | null }>({ isOpen: false, word: null });
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const getWordUrl = (wordId: string) => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    return `${baseUrl}/card/${wordId}`;
+  };
+
+  const handleCopyLink = async (word: WordCard) => {
+    await navigator.clipboard.writeText(getWordUrl(word.id));
+    setCopiedId(word.id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleDownloadQR = () => {
+    if (!qrModal.word) return;
+    const svg = document.getElementById('qr-code-svg');
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+      canvas.width = 512;
+      canvas.height = 512;
+      if (ctx) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 512, 512);
+        ctx.drawImage(img, 0, 0, 512, 512);
+        const pngUrl = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngUrl;
+        downloadLink.download = `${qrModal.word?.word}-qr.png`;
+        downloadLink.click();
+      }
+    };
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+  };
 
   useEffect(() => {
     // Check for admin mode
@@ -150,14 +192,11 @@ export default function AdminPage() {
     <div className="min-h-screen bg-stone-50">
       {/* Header */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/?admin=true" className="text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2">
-            <ArrowLeft size={20} />
-            <span className="text-sm hidden sm:inline">Terug</span>
-          </Link>
-          <h1 className="font-serif text-xl text-stone-800">Admin</h1>
-          <div className="w-16"></div>
-        </div>
+        <Link href="/?admin=true" className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2">
+          <ArrowLeft size={20} />
+          <span className="text-sm hidden sm:inline">Terug</span>
+        </Link>
+        <h1 className="font-serif text-xl text-stone-800 text-center">Admin</h1>
       </div>
 
       {/* Tabs */}
@@ -330,7 +369,25 @@ export default function AdminPage() {
                         <span className="font-serif text-lg text-stone-800">{word.word}</span>
                       </div>
                       <p className="text-stone-500 text-sm mb-1">{word.country}</p>
-                      <p className="text-stone-600 text-sm line-clamp-2">{word.shortDefinition}</p>
+                      <p className="text-stone-600 text-sm line-clamp-2 mb-3">{word.shortDefinition}</p>
+
+                      {/* Share actions */}
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => handleCopyLink(word)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-xs transition-colors"
+                        >
+                          {copiedId === word.id ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                          {copiedId === word.id ? 'Gekopieerd!' : 'Kopieer link'}
+                        </button>
+                        <button
+                          onClick={() => setQrModal({ isOpen: true, word })}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-xs transition-colors"
+                        >
+                          <QrCode size={14} />
+                          QR code
+                        </button>
+                      </div>
                     </div>
 
                     <button
@@ -469,6 +526,63 @@ export default function AdminPage() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteModal({ isOpen: false, type: 'memory', id: '', name: '' })}
       />
+
+      {/* QR Code Modal */}
+      {qrModal.isOpen && qrModal.word && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setQrModal({ isOpen: false, word: null })}
+          />
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
+            <button
+              onClick={() => setQrModal({ isOpen: false, word: null })}
+              className="absolute top-4 right-4 text-stone-400 hover:text-stone-600 transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="text-center mb-6">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <TwemojiFlag emoji={getCountryFlag(qrModal.word.country)} className="text-2xl" />
+                <h3 className="font-serif text-xl text-stone-800">{qrModal.word.word}</h3>
+              </div>
+              <p className="text-stone-500 text-sm">{qrModal.word.country}</p>
+            </div>
+
+            <div className="flex justify-center mb-6 p-4 bg-white rounded-xl border border-stone-200">
+              <QRCodeSVG
+                id="qr-code-svg"
+                value={getWordUrl(qrModal.word.id)}
+                size={200}
+                level="H"
+                includeMargin={true}
+              />
+            </div>
+
+            <p className="text-xs text-stone-400 text-center mb-4 break-all">
+              {getWordUrl(qrModal.word.id)}
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleCopyLink(qrModal.word!)}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-stone-200 rounded-xl text-stone-600 font-medium hover:bg-stone-50 transition-colors"
+              >
+                <Copy size={18} />
+                Kopieer
+              </button>
+              <button
+                onClick={handleDownloadQR}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-stone-900 text-white rounded-xl font-bold hover:bg-stone-800 transition-colors"
+              >
+                <Download size={18} />
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
