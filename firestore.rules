@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Words collection - read and write
+    match /words/{wordId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Memories collection - anyone can read and write
+    match /memories/{memoryId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Comments collection - anyone can read and write
+    match /comments/{commentId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

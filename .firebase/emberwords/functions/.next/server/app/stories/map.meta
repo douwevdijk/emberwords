@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stories/layout,_N_T_/stories/map/layout,_N_T_/stories/map/page,_N_T_/stories/map"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stories/map/__PAGE__",
+    "/stories/map",
+    "/stories",
+    "/_index",
+    "/_head"
+  ]
+}

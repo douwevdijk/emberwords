@@ -1,0 +1,54 @@
+import { Metadata } from 'next';
+import { getWordById } from '@/lib/wordService';
+import CardDetailClient from './CardDetailClient';
+
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+// Generate dynamic metadata for Open Graph
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const card = await getWordById(id);
+
+  if (!card) {
+    return {
+      title: 'Woord niet gevonden - Emberwords',
+    };
+  }
+
+  return {
+    title: `${card.word} - Emberwords`,
+    description: card.shortDefinition,
+    openGraph: {
+      title: card.word,
+      description: card.shortDefinition,
+      type: 'article',
+      locale: 'nl_NL',
+      siteName: 'Emberwords',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: card.word,
+      description: card.shortDefinition,
+    },
+  };
+}
+
+export default async function CardPage({ params }: Props) {
+  const { id } = await params;
+  const card = await getWordById(id);
+
+  if (!card) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-serif text-stone-800 mb-2">Woord niet gevonden</h1>
+          <p className="text-stone-500">Dit woord bestaat niet of is verwijderd.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return <CardDetailClient key={id} card={card} />;
+}
