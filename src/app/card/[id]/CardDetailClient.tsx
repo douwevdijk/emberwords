@@ -269,7 +269,7 @@ export default function CardDetailClient({ card }: Props) {
   // SUCCESS
   if (viewState === 'success') {
     return (
-      <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white flex flex-col items-center justify-center p-6 pt-20">
+      <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white flex flex-col items-center p-6 pt-12 overflow-auto">
         <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
         <div className="mb-8 relative">
           <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
