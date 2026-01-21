@@ -13,10 +13,11 @@
 .backface-hidden {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .rotate-y-180 {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(0);
 }
 
 .flip-transition {
