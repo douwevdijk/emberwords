@@ -188,10 +188,12 @@ export default function CardDetailClient({ card }: Props) {
                 <p className="text-stone-400 text-sm italic mb-8">/{card.pronunciation}/</p>
               )}
               <div className="w-12 h-1 bg-amber-400 rounded-full mb-12"></div>
-              <p className="text-stone-400 text-sm flex items-center gap-2">
-                <RotateCcw size={16} />
-                Tik om te draaien
-              </p>
+              <div className="flex flex-col items-center gap-2 animate-pulse">
+                <RotateCcw size={24} className="text-amber-500" />
+                <p className="text-stone-600 text-base font-medium tracking-wide">
+                  Tik om te draaien
+                </p>
+              </div>
             </div>
           </div>
 
@@ -253,7 +255,7 @@ export default function CardDetailClient({ card }: Props) {
                     }, 100);
                   }}
                   disabled={isLoadingMemory}
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-stone-900 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors shadow-lg disabled:bg-amber-400"
+                  className="w-full bg-amber-500 hover:bg-amber-600 text-stone-900 py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors shadow-lg disabled:bg-amber-400"
                 >
                   {isLoadingMemory ? <Loader2 size={20} className="animate-spin" /> : <PenLine size={20} />}
                   {isLoadingMemory ? 'Laden...' : 'Deel jouw verhaal'}
