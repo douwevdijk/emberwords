@@ -89,64 +89,73 @@ export default function MapPage() {
         </div>
       </div>
 
-      {/* Selected memory detail - Mobile bottom sheet */}
+      {/* Selected memory detail - Responsive: bottom sheet on mobile, side panel on desktop */}
       {selectedMemory && (
-        <div className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl border-t border-stone-200 max-h-[60vh] overflow-auto animate-slide-up">
-          <div className="sticky top-0 bg-white px-4 py-3 border-b border-stone-100 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {getWordForMemory(selectedMemory) && (
-                <>
-                  <TwemojiFlag emoji={getCountryFlag(getWordForMemory(selectedMemory)!.country)} className="text-xl" />
-                  <span className="font-serif text-lg">{getWordForMemory(selectedMemory)?.word}</span>
-                </>
-              )}
-            </div>
-            <button
-              onClick={() => setSelectedMemory(null)}
-              className="p-2 text-stone-400 hover:text-stone-600"
-            >
-              <X size={20} />
-            </button>
-          </div>
+        <>
+          {/* Desktop overlay to close */}
+          <div
+            className="hidden md:block fixed inset-0 z-40"
+            onClick={() => setSelectedMemory(null)}
+          />
 
-          <div className="p-4">
-            {/* User info */}
-            {selectedMemory.userName && (
-              <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">
-                <User size={16} />
-                <span>{selectedMemory.userName}</span>
+          {/* Mobile: bottom sheet, Desktop: side panel */}
+          <div className="fixed z-50 bg-white shadow-2xl border-stone-200 overflow-auto animate-slide-up
+            inset-x-0 bottom-0 rounded-t-2xl border-t max-h-[60vh]
+            md:inset-y-0 md:right-0 md:left-auto md:top-[57px] md:bottom-0 md:w-[420px] md:rounded-none md:border-l md:border-t-0 md:max-h-none md:animate-none">
+            <div className="sticky top-0 bg-white px-4 py-3 border-b border-stone-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {getWordForMemory(selectedMemory) && (
+                  <>
+                    <TwemojiFlag emoji={getCountryFlag(getWordForMemory(selectedMemory)!.country)} className="text-xl" />
+                    <span className="font-serif text-lg">{getWordForMemory(selectedMemory)?.word}</span>
+                  </>
+                )}
               </div>
-            )}
-
-            {/* Location */}
-            <div className="flex items-center gap-2 text-stone-500 text-sm mb-4">
-              <MapPin size={16} className="text-amber-500" />
-              <span>{selectedMemory.userLocation.name}</span>
+              <button
+                onClick={() => setSelectedMemory(null)}
+                className="p-2 text-stone-400 hover:text-stone-600"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            {/* Story text */}
-            <p className="text-stone-700 leading-relaxed mb-4">{selectedMemory.text}</p>
+            <div className="p-4 md:p-6">
+              {/* User info */}
+              {selectedMemory.userName && (
+                <div className="flex items-center gap-2 text-stone-500 text-sm mb-3">
+                  <User size={16} />
+                  <span>{selectedMemory.userName}</span>
+                </div>
+              )}
 
-            {/* Image if present */}
-            {selectedMemory.mediaUrl && selectedMemory.mediaType === 'image' && (
-              <img
-                src={selectedMemory.mediaUrl}
-                alt="Verhaal afbeelding"
-                className="w-full rounded-xl object-cover max-h-48"
-              />
-            )}
+              {/* Location */}
+              <div className="flex items-center gap-2 text-stone-500 text-sm mb-4">
+                <MapPin size={16} className="text-amber-500" />
+                <span>{selectedMemory.userLocation.name}</span>
+              </div>
 
-            {/* Link to word */}
-            {getWordForMemory(selectedMemory) && (
+              {/* Story text */}
+              <p className="text-stone-700 leading-relaxed mb-4 md:text-lg">{selectedMemory.text}</p>
+
+              {/* Image if present */}
+              {selectedMemory.mediaUrl && selectedMemory.mediaType === 'image' && (
+                <img
+                  src={selectedMemory.mediaUrl}
+                  alt="Verhaal afbeelding"
+                  className="w-full rounded-xl object-cover max-h-48 md:max-h-64"
+                />
+              )}
+
+              {/* Link to story */}
               <Link
-                href={`/card/${selectedMemory.cardId}`}
+                href={`/stories/${selectedMemory.id}`}
                 className="mt-4 block w-full bg-stone-900 text-white py-3 rounded-xl font-bold text-center hover:bg-stone-800 transition-colors"
               >
-                Bekijk {getWordForMemory(selectedMemory)?.word}
+                Bekijk verhaal
               </Link>
-            )}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
