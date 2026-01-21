@@ -295,6 +295,13 @@ export default function CardDetailClient({ card }: Props) {
         </div>
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <button
+            onClick={handleShare}
+            className="w-full bg-amber-500 hover:bg-amber-600 text-stone-900 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-md"
+          >
+            <Share2 size={20} />
+            Deel dit woord
+          </button>
+          <button
             onClick={() => { resetMemoryForm(); setViewState('front'); }}
             className="w-full bg-stone-900 hover:bg-stone-800 text-white py-4 rounded-xl font-bold transition-colors"
           >
