@@ -93,9 +93,6 @@ export default function PlacesAutocomplete({ onSelect }: PlacesAutocompleteProps
         });
       }
     });
-
-    // Focus input
-    inputRef.current.focus();
   }, [isLoaded, onSelect]);
 
   if (isLoading) {
