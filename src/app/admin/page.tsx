@@ -86,11 +86,12 @@ export default function AdminPage() {
   const handleSaveGeneratedCard = async () => {
     if (!generatedCard) return;
 
+    const cardToSave = generatedCard;
     setIsSaving(true);
     try {
-      const savedId = await saveWord(generatedCard);
+      const savedId = await saveWord(cardToSave);
       if (savedId) {
-        setWords(prev => [{ ...generatedCard, id: savedId }, ...prev]);
+        setWords(prev => [{ ...cardToSave, id: savedId }, ...prev]);
         setGeneratedCard(null);
         setThemeInput('');
       }
