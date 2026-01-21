@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, Globe } from 'lucide-react';
+import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, BookOpen } from 'lucide-react';
 import { getAllMemories, getAllComments, deleteMemory, deleteComment } from '@/lib/memoryService';
 import { getAllWords, saveWord, deleteWord } from '@/lib/wordService';
 import { generateWordCard } from '@/lib/geminiService';
@@ -246,19 +246,53 @@ export default function AdminPage() {
                   </button>
                 </form>
               ) : (
-                <div className="space-y-4">
-                  <div className="bg-stone-50 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <TwemojiFlag emoji={getCountryFlag(generatedCard.country)} className="text-2xl" />
-                      <div>
-                        <h4 className="font-serif text-xl text-stone-800">{generatedCard.word}</h4>
-                        <p className="text-xs text-stone-500">{generatedCard.country}</p>
-                      </div>
+                <div className="space-y-6">
+                  {/* Header */}
+                  <div className="flex items-start gap-3">
+                    <TwemojiFlag emoji={getCountryFlag(generatedCard.country)} className="text-3xl" />
+                    <div>
+                      <p className="text-xs uppercase tracking-widest text-stone-400 mb-1">{generatedCard.country}</p>
+                      <h4 className="font-serif text-2xl text-stone-800">{generatedCard.word}</h4>
+                      {generatedCard.pronunciation && (
+                        <p className="text-stone-400 text-sm italic">/{generatedCard.pronunciation}/</p>
+                      )}
                     </div>
-                    <p className="text-stone-600 text-sm italic">"{generatedCard.shortDefinition}"</p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  {/* Definition */}
+                  <p className="text-stone-600 text-lg italic leading-relaxed">"{generatedCard.shortDefinition}"</p>
+
+                  {/* DeepDive */}
+                  {generatedCard.deepDive && (
+                    <div className="bg-stone-50 rounded-xl p-4 space-y-4">
+                      <h5 className="font-serif text-lg text-stone-800 flex items-center gap-2">
+                        <BookOpen size={18} className="text-amber-500" />
+                        De Diepte In
+                      </h5>
+                      <div>
+                        <p className="text-xs uppercase tracking-wide text-stone-400 mb-1">Culturele Context</p>
+                        <p className="text-stone-600 text-sm">{generatedCard.deepDive.culturalContext}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wide text-stone-400 mb-1">Filosofie</p>
+                        <p className="text-stone-600 text-sm italic border-l-2 border-amber-400 pl-3">{generatedCard.deepDive.philosophicalInsight}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wide text-stone-400 mb-1">Voorbeeld</p>
+                        <p className="text-stone-600 text-sm bg-white p-3 rounded-lg">{generatedCard.deepDive.exampleUsage}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Question */}
+                  {generatedCard.question && (
+                    <div className="bg-stone-800 rounded-xl p-4 border-l-4 border-amber-500">
+                      <p className="text-white font-medium text-sm">{generatedCard.question}</p>
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
                     <button
                       onClick={handleSaveGeneratedCard}
                       disabled={isSaving}
