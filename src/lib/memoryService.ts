@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   addDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -146,5 +147,44 @@ export const getCommentsForMemory = async (memoryId: string): Promise<Comment[]>
   } catch (error) {
     console.error('Error fetching comments:', error);
     return [];
+  }
+};
+
+// Get all comments (for admin)
+export const getAllComments = async (): Promise<Comment[]> => {
+  try {
+    const commentsRef = collection(db, COMMENTS_COLLECTION);
+    const snapshot = await getDocs(commentsRef);
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      timestamp: doc.data().timestamp?.toMillis() || Date.now()
+    } as Comment));
+  } catch (error) {
+    console.error('Error fetching all comments:', error);
+    return [];
+  }
+};
+
+// Delete a memory
+export const deleteMemory = async (id: string): Promise<boolean> => {
+  try {
+    await deleteDoc(doc(db, MEMORIES_COLLECTION, id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting memory:', error);
+    return false;
+  }
+};
+
+// Delete a comment
+export const deleteComment = async (id: string): Promise<boolean> => {
+  try {
+    await deleteDoc(doc(db, COMMENTS_COLLECTION, id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    return false;
   }
 };
