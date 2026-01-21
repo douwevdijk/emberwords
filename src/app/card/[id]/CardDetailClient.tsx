@@ -180,7 +180,7 @@ export default function CardDetailClient({ card }: Props) {
           {/* FRONT - White */}
           <div className="absolute inset-0 backface-hidden bg-white overflow-auto">
             <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
-            <div className="flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 min-h-screen p-8">
+            <div className="flex flex-col items-center justify-center min-h-screen p-8">
               <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">{card.country}</p>
               <h1 className="text-5xl font-serif text-stone-900 mb-2 text-center">{card.word}</h1>
               {card.pronunciation && (
