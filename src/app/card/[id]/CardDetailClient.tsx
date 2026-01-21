@@ -180,7 +180,7 @@ export default function CardDetailClient({ card }: Props) {
           {/* FRONT - White */}
           <div className="absolute inset-0 backface-hidden bg-white overflow-auto">
             <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
-            <div className="flex flex-col items-center justify-center min-h-screen p-8">
+            <div className="flex flex-col items-center justify-start pt-24 md:justify-center md:pt-0 min-h-screen p-8">
               <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">{card.country}</p>
               <h1 className="text-5xl font-serif text-stone-900 mb-2 text-center">{card.word}</h1>
               {card.pronunciation && (
@@ -351,6 +351,11 @@ export default function CardDetailClient({ card }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Jouw naam"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+              data-form-type="other"
               className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-stone-800"
             />
           </div>
@@ -362,6 +367,10 @@ export default function CardDetailClient({ card }: Props) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Beschrijf een moment waarop je dit gevoel ervoer..."
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="sentences"
+              data-form-type="other"
               className="w-full h-40 p-4 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none text-stone-800"
             />
           </div>
