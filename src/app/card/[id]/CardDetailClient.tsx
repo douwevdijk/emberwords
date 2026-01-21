@@ -37,6 +37,7 @@ export default function CardDetailClient({ card }: Props) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isLoadingMemory, setIsLoadingMemory] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   // Scroll to top when view changes
   useEffect(() => {
@@ -268,12 +269,12 @@ export default function CardDetailClient({ card }: Props) {
   // SUCCESS
   if (viewState === 'success') {
     return (
-      <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white flex flex-col items-center justify-center p-6">
+      <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white flex flex-col items-center justify-center p-6 pt-20">
+        <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
         <div className="mb-8 relative">
-          <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg animate-bounce-once">
+          <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
             <Check size={48} className="text-white" strokeWidth={3} />
           </div>
-          <div className="absolute -inset-4 bg-green-500/20 rounded-full animate-ping-once"></div>
         </div>
         <h1 className="text-3xl font-serif text-stone-800 mb-2 text-center">Bedankt!</h1>
         <p className="text-stone-500 text-center mb-8 max-w-sm">
@@ -303,11 +304,12 @@ export default function CardDetailClient({ card }: Props) {
             Terug naar {card.word}
           </button>
           <button
-            onClick={() => router.push('/stories')}
-            className="w-full bg-amber-100 text-amber-700 py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-amber-200 transition-colors"
+            onClick={() => { setIsNavigating(true); router.push('/stories'); }}
+            disabled={isNavigating}
+            className="w-full bg-amber-100 text-amber-700 py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-amber-200 transition-colors disabled:opacity-70"
           >
-            <MapPin size={18} />
-            Bekijk alle verhalen
+            {isNavigating ? <Loader2 size={18} className="animate-spin" /> : <MapPin size={18} />}
+            {isNavigating ? 'Laden...' : 'Bekijk alle verhalen'}
           </button>
           <button
             onClick={() => router.push('/')}
