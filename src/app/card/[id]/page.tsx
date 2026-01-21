@@ -17,6 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const ogImageUrl = `https://emberwords.vercel.app/api/og?word=${encodeURIComponent(card.word)}&country=${encodeURIComponent(card.country)}&definition=${encodeURIComponent(card.shortDefinition)}`;
+
   return {
     title: `${card.word} - Emberwords`,
     description: card.shortDefinition,
@@ -26,11 +28,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       locale: 'nl_NL',
       siteName: 'Emberwords',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: card.word,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: card.word,
       description: card.shortDefinition,
+      images: [ogImageUrl],
     },
   };
 }

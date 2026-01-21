@@ -29,6 +29,7 @@ export default function CardDetailClient({ card }: Props) {
   const [name, setName] = useState('');
   const [text, setText] = useState('');
   const [image, setImage] = useState<string | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [location, setLocation] = useState<LocationResult | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
@@ -36,6 +37,11 @@ export default function CardDetailClient({ card }: Props) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isLoadingMemory, setIsLoadingMemory] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  // Scroll to top when view changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [viewState]);
 
   const deepDive = card.deepDive || null;
 
@@ -45,24 +51,42 @@ export default function CardDetailClient({ card }: Props) {
     setShowToast(true);
   }, []);
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setIsUploadingImage(true);
       setUploadProgress(0);
+      setUploadedImageUrl(null);
+
       const reader = new FileReader();
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
-          setUploadProgress(Math.round((event.loaded / event.total) * 100));
+          setUploadProgress(Math.round((event.loaded / event.total) * 50)); // 0-50% for reading
         }
       };
-      reader.onloadend = () => {
-        setUploadProgress(100);
-        setTimeout(() => {
-          setImage(reader.result as string);
+      reader.onloadend = async () => {
+        const base64 = reader.result as string;
+        setImage(base64);
+        setUploadProgress(50);
+
+        // Upload to Firebase Storage immediately
+        const tempId = `${card.id}_${Date.now()}`;
+        const imagePath = generateMemoryImagePath(tempId);
+        const uploadedUrl = await uploadImage(base64, imagePath);
+
+        if (uploadedUrl) {
+          setUploadedImageUrl(uploadedUrl);
+          setUploadProgress(100);
+          setTimeout(() => {
+            setIsUploadingImage(false);
+            setUploadProgress(0);
+          }, 300);
+        } else {
+          alert('Foto uploaden mislukt. Probeer opnieuw.');
+          setImage(null);
           setIsUploadingImage(false);
           setUploadProgress(0);
-        }, 300);
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -99,31 +123,20 @@ export default function CardDetailClient({ card }: Props) {
       alert('Voeg een locatie toe');
       return;
     }
+    if (image && !uploadedImageUrl) {
+      alert('Wacht tot de foto is geüpload');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
-      // Upload image to Firebase Storage if present
-      let imageUrl: string | undefined = undefined;
-      if (image) {
-        const tempId = `${card.id}_${Date.now()}`;
-        const imagePath = generateMemoryImagePath(tempId);
-        const uploadedUrl = await uploadImage(image, imagePath);
-        if (uploadedUrl) {
-          imageUrl = uploadedUrl;
-        } else {
-          alert('Foto uploaden mislukt. Probeer opnieuw.');
-          setIsSubmitting(false);
-          return;
-        }
-      }
-
       const memoryId = await saveMemory({
         cardId: card.id,
         userName: name.trim(),
         text: text.trim(),
         userLocation: { lat: location.lat, lng: location.lng, name: location.name },
-        mediaUrl: imageUrl,
-        mediaType: imageUrl ? 'image' : 'none'
+        mediaUrl: uploadedImageUrl || undefined,
+        mediaType: uploadedImageUrl ? 'image' : 'none'
       });
 
       if (memoryId) {
@@ -143,6 +156,7 @@ export default function CardDetailClient({ card }: Props) {
     setName('');
     setText('');
     setImage(null);
+    setUploadedImageUrl(null);
     setLocation(null);
     setIsSubmitting(false);
   };
@@ -171,7 +185,7 @@ export default function CardDetailClient({ card }: Props) {
               </button>
             </div>
             <Toast message="Link gekopieerd!" isVisible={showToast} onClose={() => setShowToast(false)} />
-            <div className="flex flex-col items-center justify-center pt-24 md:pt-0 min-h-[calc(100vh-57px)] p-8">
+            <div className="flex flex-col items-center justify-start pt-32 md:justify-center md:pt-0 min-h-[calc(100vh-57px)] p-8">
               <p className="text-xs uppercase tracking-widest text-stone-400 mb-4">{card.country}</p>
               <h1 className="text-5xl font-serif text-stone-900 mb-2 text-center">{card.word}</h1>
               {card.pronunciation && (
@@ -280,13 +294,6 @@ export default function CardDetailClient({ card }: Props) {
           <span className="text-sm">Jouw locatie is toegevoegd aan de kaart</span>
         </div>
         <div className="flex flex-col gap-3 w-full max-w-xs">
-          <button
-            onClick={handleShare}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-stone-900 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-md"
-          >
-            <Share2 size={20} />
-            Deel dit woord
-          </button>
           <button
             onClick={() => { resetMemoryForm(); setViewState('front'); }}
             className="w-full bg-stone-900 hover:bg-stone-800 text-white py-4 rounded-xl font-bold transition-colors"
