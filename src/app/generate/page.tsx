@@ -113,6 +113,24 @@ export default function GeneratePage() {
   if (viewState === 'form') {
     return (
       <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white overflow-auto">
+        {/* Loading Overlay */}
+        {isGenerating && (
+          <div className="fixed inset-0 z-50 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center">
+            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
+              <Sparkles size={40} className="text-amber-600" />
+            </div>
+            <h2 className="font-serif text-2xl text-stone-800 mb-2">Even geduld...</h2>
+            <p className="text-stone-500 text-center max-w-xs">
+              We zoeken het perfecte woord voor jouw herinnering. Dit kan een minuutje duren.
+            </p>
+            <div className="mt-6 flex gap-1">
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+          </div>
+        )}
+
         {/* Content */}
         <div className="flex flex-col items-center justify-start pt-12 md:justify-center md:pt-0 min-h-screen p-6">
           {/* Intro */}
