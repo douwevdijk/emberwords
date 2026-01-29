@@ -143,14 +143,23 @@ export const generateGiftWord = async (
       De herinnering: "${memory}"
       De plek: "${location.name}"
 
-      Zoek een passend onvertaalbaar woord dat de essentie van ONZE gedeelde herinnering vangt.
+      ZOEK EEN UNIEK, LOKAAL WOORD dat de essentie van deze specifieke herinnering vangt.
 
-      Het woord mag komen uit:
-      - Wereldtalen (Japans, Deens, Portugees, etc.)
-      - Regionale talen en dialecten (Zeeuws, Drents, Limburgs, Fries, Twents, Brabants, etc.)
-      - Lokale uitdrukkingen die passen bij de plek van de herinnering
+      PRIORITEIT voor woordkeuze (in deze volgorde):
+      1. EERST: Kijk naar de plek "${location.name}" - zoek een woord uit die regio/dialect:
+         - Als het in Zeeland is: Zeeuws woord
+         - Als het in Friesland is: Fries woord
+         - Als het in Limburg is: Limburgs woord
+         - Als het in Drenthe is: Drents woord
+         - Als het in Twente is: Twents woord
+         - Als het in Brabant is: Brabants woord
+         - Als het in Groningen is: Gronings woord
+         - Als het in Gelderland is: Veluws of Achterhoeks woord
+         - Enz.
+      2. DAARNA: Als er geen passend lokaal woord is, kies uit een andere taal die bij het GEVOEL past
 
-      Kies het woord dat het BESTE past bij de herinnering en de plek. Lokaal heeft de voorkeur.
+      VERMIJD de standaard woorden zoals Hygge, Saudade, Ubuntu, Komorebi - die zijn te bekend!
+      Zoek naar OBSCURE, UNIEKE woorden die mensen niet kennen.
 
       BELANGRIJK - Schrijf ALTIJD vanuit "ons/wij/jij en ik" perspectief:
       - Dit is een verhaal van mij AAN ${withPerson}
@@ -159,8 +168,9 @@ export const generateGiftWord = async (
       - De lezer (${withPerson}) moet zich aangesproken voelen
 
       Genereer een JSON object:
-      - word: Het woord zelf
-      - country: De taal of regio van herkomst (bijv. "Zeeuws", "Japans", "Limburgs", "Deens")
+      - word: Het woord zelf (UNIEK, niet de standaard bekende woorden!)
+      - translation: De letterlijke Nederlandse vertaling van het woord (kort, 1-3 woorden)
+      - country: De taal of regio van herkomst (bijv. "Zeeuws", "Fries", "Limburgs", "Welsh", "Schots-Gaelisch")
       - pronunciation: Fonetische uitspraak
       - meaning: Een persoonlijk verhaal aan ${withPerson} (4-5 zinnen). Begin met iets als "Weet je nog toen wij..." of "Dit woord is van ons, ${withPerson}...". Verwijs naar concrete details uit de herinnering. Eindig met wat dit moment voor ons betekent.
       - poem: Een persoonlijk gedicht van 6-8 regels, geschreven aan ${withPerson}. Gebruik "jij", "wij", "ons". Het gedicht moet concreet verwijzen naar de herinnering en eindigen met warmte en verbondenheid.
@@ -177,12 +187,13 @@ export const generateGiftWord = async (
           type: Type.OBJECT,
           properties: {
             word: { type: Type.STRING },
+            translation: { type: Type.STRING },
             country: { type: Type.STRING },
             pronunciation: { type: Type.STRING },
             meaning: { type: Type.STRING },
             poem: { type: Type.STRING },
           },
-          required: ["word", "country", "meaning", "poem"],
+          required: ["word", "translation", "country", "meaning", "poem"],
         },
       },
     });
@@ -197,6 +208,7 @@ export const generateGiftWord = async (
       memory,
       location,
       word: data.word,
+      translation: data.translation,
       country: data.country,
       pronunciation: data.pronunciation,
       meaning: data.meaning,

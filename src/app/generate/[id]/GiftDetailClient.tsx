@@ -66,6 +66,9 @@ export default function GiftDetailClient({ gift }: Props) {
           {/* Word */}
           <h1 className="text-5xl font-serif text-stone-900 text-center mb-2">{gift.word}</h1>
 
+          {/* Translation */}
+          <p className="text-amber-600 text-lg text-center mb-1">{gift.translation}</p>
+
           {/* Pronunciation */}
           {gift.pronunciation && (
             <p className="text-stone-400 text-sm italic text-center mb-6">/{gift.pronunciation}/</p>

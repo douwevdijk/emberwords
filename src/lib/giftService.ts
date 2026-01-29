@@ -38,6 +38,7 @@ export const saveGift = async (gift: Gift): Promise<string | null> => {
       memory: gift.memory,
       location: gift.location,
       word: gift.word,
+      translation: gift.translation,
       country: gift.country,
       pronunciation: gift.pronunciation || null,
       meaning: gift.meaning,

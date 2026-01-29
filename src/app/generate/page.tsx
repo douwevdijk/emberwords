@@ -258,6 +258,9 @@ export default function GeneratePage() {
             {/* Word */}
             <h1 className="text-5xl font-serif text-stone-900 text-center mb-2">{generatedGift.word}</h1>
 
+            {/* Translation */}
+            <p className="text-amber-600 text-lg text-center mb-1">{generatedGift.translation}</p>
+
             {/* Pronunciation */}
             {generatedGift.pronunciation && (
               <p className="text-stone-400 text-sm italic text-center mb-6">/{generatedGift.pronunciation}/</p>
