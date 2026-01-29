@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.com';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
 const ogImageUrl = `${baseUrl}/api/og-person?name=Herinneringen&description=Maak%20een%20pagina%20aan%20en%20verzamel%20samen%20herinneringen&count=0`;
 
 export const metadata: Metadata = {

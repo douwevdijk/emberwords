@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const count = gifts.length;
 
   // Build OG image URL
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
   const ogImageUrl = `${baseUrl}/api/og-person?name=${encodeURIComponent(person.name)}&description=${encodeURIComponent(person.description || '')}&count=${count}`;
 
   return {
