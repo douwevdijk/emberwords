@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Flame, Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2, Copy, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { Person, Gift } from '@/lib/types';
 import { verifyAdminToken } from '@/lib/personService';
@@ -17,12 +17,11 @@ type ViewState = 'list' | 'form' | 'preview';
 
 interface Props {
   person: Person;
+  adminToken?: string;
 }
 
-export default function PersonPageClient({ person }: Props) {
+export default function PersonPageClient({ person, adminToken }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const adminToken = searchParams.get('beheer');
 
   const [viewState, setViewState] = useState<ViewState>('list');
   const [isAdmin, setIsAdmin] = useState(false);

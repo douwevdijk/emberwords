@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 
 interface Props {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ beheer?: string }>;
 }
 
 // Generate dynamic metadata for Open Graph
@@ -56,8 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function PersonPage({ params }: Props) {
+export default async function PersonPage({ params, searchParams }: Props) {
   const { id } = await params;
+  const { beheer } = await searchParams;
   const person = await getPersonById(id);
 
   if (!person) {
@@ -71,5 +73,5 @@ export default async function PersonPage({ params }: Props) {
     );
   }
 
-  return <PersonPageClient person={person} />;
+  return <PersonPageClient person={person} adminToken={beheer} />;
 }
