@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Heart, Share2 } from 'lucide-react';
+import { Heart, Share2 } from 'lucide-react';
 import { Gift } from '@/lib/types';
 import { getCountryFlag } from '@/lib/countryFlags';
 import TwemojiFlag from '@/components/TwemojiFlag';
@@ -41,11 +41,7 @@ export default function GiftDetailClient({ gift }: Props) {
 
       {/* Header */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-4">
-        <div className="max-w-2xl mx-auto relative flex items-center justify-center">
-          <Link href="/generate" className="absolute left-0 text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2">
-            <ArrowLeft size={20} />
-            <span className="text-sm hidden sm:inline">Nieuw</span>
-          </Link>
+        <div className="max-w-2xl mx-auto flex items-center justify-center">
           <div className="flex items-center gap-2">
             <Heart size={20} className="text-amber-500" />
             <span className="text-sm text-stone-600">Herinnering</span>

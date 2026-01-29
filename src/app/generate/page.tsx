@@ -3,7 +3,7 @@
 import { useState, lazy, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Heart, Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2 } from 'lucide-react';
+import { Heart, Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2 } from 'lucide-react';
 import { generateGiftWord } from '@/lib/geminiService';
 import { saveGift } from '@/lib/giftService';
 import { Gift } from '@/lib/types';
@@ -115,11 +115,7 @@ export default function GeneratePage() {
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
         {/* Header */}
         <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-4">
-          <div className="max-w-2xl mx-auto relative flex items-center justify-center">
-            <Link href="/" className="absolute left-0 text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2">
-              <ArrowLeft size={20} />
-              <span className="text-sm hidden sm:inline">Terug</span>
-            </Link>
+          <div className="max-w-2xl mx-auto flex items-center justify-center">
             <h1 className="font-serif text-xl text-stone-800">Een herinnering vastleggen</h1>
           </div>
         </div>
@@ -233,14 +229,7 @@ export default function GeneratePage() {
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
         {/* Header */}
         <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200 px-4 py-4">
-          <div className="max-w-2xl mx-auto relative flex items-center justify-center">
-            <button
-              onClick={() => setViewState('form')}
-              className="absolute left-0 text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2"
-            >
-              <ArrowLeft size={20} />
-              <span className="text-sm hidden sm:inline">Terug</span>
-            </button>
+          <div className="max-w-2xl mx-auto flex items-center justify-center">
             <span className="text-sm text-stone-500">Preview</span>
           </div>
         </div>
