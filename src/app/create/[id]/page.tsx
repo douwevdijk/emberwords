@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getPersonById } from '@/lib/personService';
+import { getGiftsByPersonId } from '@/lib/giftService';
 import PersonPageClient from './PersonPageClient';
 
 interface Props {
@@ -17,6 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  // Get count of memories for this person
+  const gifts = await getGiftsByPersonId(id, false);
+  const count = gifts.length;
+
+  // Build OG image URL
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.com';
+  const ogImageUrl = `${baseUrl}/api/og-person?name=${encodeURIComponent(person.name)}&description=${encodeURIComponent(person.description || '')}&count=${count}`;
+
   return {
     title: `Herinneringen voor ${person.name} - Emberwords`,
     description: person.description || `Deel jouw herinneringen met ${person.name}`,
@@ -26,6 +35,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       locale: 'nl_NL',
       siteName: 'Emberwords',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `Herinneringen voor ${person.name}`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Herinneringen voor ${person.name}`,
+      description: person.description || `Deel jouw herinneringen met ${person.name}`,
+      images: [ogImageUrl],
     },
   };
 }
