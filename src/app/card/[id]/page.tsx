@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { getWordById } from '@/lib/wordService';
 import CardDetailClient from './CardDetailClient';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ id: string }>;
 }

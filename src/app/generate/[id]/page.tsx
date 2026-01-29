@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { getGiftById } from '@/lib/giftService';
 import GiftDetailClient from './GiftDetailClient';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ id: string }>;
 }
