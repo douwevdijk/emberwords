@@ -3,7 +3,12 @@ import { WordCard, DeepDiveContent, Gift } from "./types";
 import { saveWord } from "./wordService";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
-const ai = new GoogleGenAI({ apiKey });
+const ai = new GoogleGenAI({
+  apiKey,
+  httpOptions: {
+    timeout: 120000, // 2 minutes timeout
+  }
+});
 
 export const generateDeepDive = async (
   word: string,
