@@ -77,6 +77,7 @@ export default function GeneratePage() {
     if (result) {
       setGeneratedGift(result);
       setViewState('preview');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       alert('Er ging iets mis. Probeer opnieuw.');
     }
@@ -98,6 +99,7 @@ export default function GeneratePage() {
 
     if (result) {
       setGeneratedGift(result);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       alert('Er ging iets mis. Probeer opnieuw.');
     }
