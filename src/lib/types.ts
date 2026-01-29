@@ -48,6 +48,7 @@ export interface Gift {
   };
   word: string;
   translation: string;
+  explanation: string;
   country: string;
   pronunciation?: string;
   meaning: string;

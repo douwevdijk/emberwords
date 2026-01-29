@@ -170,6 +170,7 @@ export const generateGiftWord = async (
       Genereer een JSON object:
       - word: Het woord zelf (UNIEK, niet de standaard bekende woorden!)
       - translation: De letterlijke Nederlandse vertaling van het woord (kort, 1-3 woorden)
+      - explanation: Een korte uitleg van het woord en waar het vandaan komt (2-3 zinnen). Leg uit wat het woord betekent in de oorspronkelijke cultuur/regio en wanneer het gebruikt wordt.
       - country: De taal of regio van herkomst (bijv. "Zeeuws", "Fries", "Limburgs", "Welsh", "Schots-Gaelisch")
       - pronunciation: Fonetische uitspraak
       - meaning: Een persoonlijk verhaal aan ${withPerson} (4-5 zinnen). Begin met iets als "Weet je nog toen wij..." of "Dit woord is van ons, ${withPerson}...". Verwijs naar concrete details uit de herinnering. Eindig met wat dit moment voor ons betekent.
@@ -188,12 +189,13 @@ export const generateGiftWord = async (
           properties: {
             word: { type: Type.STRING },
             translation: { type: Type.STRING },
+            explanation: { type: Type.STRING },
             country: { type: Type.STRING },
             pronunciation: { type: Type.STRING },
             meaning: { type: Type.STRING },
             poem: { type: Type.STRING },
           },
-          required: ["word", "translation", "country", "meaning", "poem"],
+          required: ["word", "translation", "explanation", "country", "meaning", "poem"],
         },
       },
     });
@@ -209,6 +211,7 @@ export const generateGiftWord = async (
       location,
       word: data.word,
       translation: data.translation,
+      explanation: data.explanation,
       country: data.country,
       pronunciation: data.pronunciation,
       meaning: data.meaning,

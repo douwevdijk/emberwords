@@ -263,8 +263,13 @@ export default function GeneratePage() {
 
             {/* Pronunciation */}
             {generatedGift.pronunciation && (
-              <p className="text-stone-400 text-sm italic text-center mb-6">/{generatedGift.pronunciation}/</p>
+              <p className="text-stone-400 text-sm italic text-center mb-4">/{generatedGift.pronunciation}/</p>
             )}
+
+            {/* Explanation */}
+            <p className="text-stone-500 text-sm text-center mb-6 max-w-md mx-auto">
+              {generatedGift.explanation}
+            </p>
 
             {/* Divider */}
             <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mb-6"></div>
