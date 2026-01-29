@@ -42,6 +42,9 @@ export default function PersonPageClient({ person, adminToken }: Props) {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Navigation loading state
+  const [navigatingToGift, setNavigatingToGift] = useState<string | null>(null);
+
   // Check admin token and load gifts
   useEffect(() => {
     const init = async () => {
@@ -253,6 +256,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                     >
                       <a
                         href={`/generate/${gift.id}`}
+                        onClick={() => setNavigatingToGift(gift.id)}
                         className="block bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 lg:p-8 border border-stone-100 cursor-pointer"
                       >
                         {/* Author name */}
@@ -277,8 +281,15 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                         </p>
 
                         {/* CTA */}
-                        <p className="text-amber-600 text-sm text-center font-medium">
-                          Bekijk herinnering →
+                        <p className="text-amber-600 text-sm text-center font-medium flex items-center justify-center gap-2">
+                          {navigatingToGift === gift.id ? (
+                            <>
+                              <Loader2 size={14} className="animate-spin" />
+                              Laden...
+                            </>
+                          ) : (
+                            'Bekijk herinnering →'
+                          )}
                         </p>
                       </a>
 
