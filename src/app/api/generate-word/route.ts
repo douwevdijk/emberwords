@@ -26,24 +26,27 @@ export async function POST(request: NextRequest) {
 
       De herinnering: "${memory}"
 
-      OPGEGEVEN LOCATIE: "${location.name}"
-      BELANGRIJK: Gebruik ALLEEN de opgegeven locatie "${location.name}" voor het kiezen van het woord.
-      Negeer andere plaatsnamen die mogelijk in de herinneringstekst staan!
+      LOCATIE: "${location.name}"
 
-      ZOEK EEN UNIEK, LOKAAL WOORD dat de essentie van deze specifieke herinnering vangt.
+      BELANGRIJKSTE REGEL: Het woord MOET afkomstig zijn uit de taal of het dialect van "${location.name}".
+      - Als de locatie in Spanje/Andalusië ligt: kies een SPAANS woord
+      - Als de locatie in Nederland ligt: kies een woord uit het lokale DIALECT (Zeeuws, Fries, Limburgs, Brabants, etc.)
+      - Als de locatie in Frankrijk ligt: kies een FRANS woord
+      - Als de locatie in Italië ligt: kies een ITALIAANS woord
+      - Als de locatie in Duitsland ligt: kies een DUITS woord
+      - Enzovoort voor alle andere landen/regio's
 
-      PRIORITEIT voor woordkeuze (in deze volgorde):
-      1. EERST: Kijk naar de OPGEGEVEN locatie "${location.name}" - zoek een woord uit die regio/dialect:
-         - Als het in Zeeland is: Zeeuws woord
-         - Als het in Friesland is: Fries woord
-         - Als het in Limburg is: Limburgs woord
-         - Als het in Drenthe is: Drents woord
-         - Als het in Twente is: Twents woord
-         - Als het in Brabant is: Brabants woord
-         - Als het in Groningen is: Gronings woord
-         - Als het in Gelderland is: Veluws of Achterhoeks woord
-         - Enz.
-      2. DAARNA: Als er geen passend lokaal woord is, kies uit een andere taal die bij het GEVOEL past
+      ZOEK EEN UNIEK WOORD UIT DE TAAL/HET DIALECT VAN "${location.name}" dat de essentie van deze herinnering vangt.
+
+      Voor Nederlandse locaties, kies uit het lokale dialect:
+      - Zeeland → Zeeuws woord
+      - Friesland → Fries woord
+      - Limburg → Limburgs woord
+      - Drenthe → Drents woord
+      - Twente → Twents woord
+      - Brabant → Brabants woord
+      - Groningen → Gronings woord
+      - Gelderland → Veluws of Achterhoeks woord
 
       VERMIJD de standaard woorden zoals Hygge, Saudade, Ubuntu, Komorebi - die zijn te bekend!
       Zoek naar OBSCURE, UNIEKE woorden die mensen niet kennen.
