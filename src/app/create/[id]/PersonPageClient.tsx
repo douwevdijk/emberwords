@@ -257,8 +257,18 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                       <a
                         href={`/generate/${gift.id}`}
                         onClick={() => setNavigatingToGift(gift.id)}
-                        className="block bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 lg:p-8 border border-stone-100 cursor-pointer"
+                        className="block bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 lg:p-8 border border-stone-100 cursor-pointer relative"
                       >
+                        {/* Loading overlay */}
+                        {navigatingToGift === gift.id && (
+                          <div className="absolute inset-0 bg-white/80 rounded-3xl flex items-center justify-center z-10">
+                            <div className="flex flex-col items-center gap-2">
+                              <Loader2 size={32} className="animate-spin text-amber-500" />
+                              <span className="text-stone-600 font-medium">Laden...</span>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Author name */}
                         {gift.authorName && (
                           <p className="text-stone-400 text-sm text-center mb-3">
@@ -281,15 +291,8 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                         </p>
 
                         {/* CTA */}
-                        <p className="text-amber-600 text-sm text-center font-medium flex items-center justify-center gap-2">
-                          {navigatingToGift === gift.id ? (
-                            <>
-                              <Loader2 size={14} className="animate-spin" />
-                              Laden...
-                            </>
-                          ) : (
-                            'Bekijk herinnering →'
-                          )}
+                        <p className="text-amber-600 text-sm text-center font-medium">
+                          Bekijk herinnering →
                         </p>
                       </a>
 
