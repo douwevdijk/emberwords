@@ -39,7 +39,7 @@ export interface Comment {
 
 export interface Gift {
   id: string;
-  forPerson: string;
+  withPerson: string;
   memory: string;
   location: {
     lat: number;
@@ -50,5 +50,6 @@ export interface Gift {
   country: string;
   pronunciation?: string;
   meaning: string;
+  poem: string;
   timestamp: number;
 }

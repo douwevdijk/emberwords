@@ -29,22 +29,24 @@ export const getGiftById = async (id: string): Promise<Gift | null> => {
 };
 
 // Save a gift to Firestore
-export const saveGift = async (gift: Gift): Promise<boolean> => {
+export const saveGift = async (gift: Gift): Promise<string | null> => {
   try {
-    const docRef = doc(db, GIFTS_COLLECTION, gift.id);
+    const id = `gift-${Date.now()}`;
+    const docRef = doc(db, GIFTS_COLLECTION, id);
     await setDoc(docRef, {
-      forPerson: gift.forPerson,
+      withPerson: gift.withPerson,
       memory: gift.memory,
       location: gift.location,
       word: gift.word,
       country: gift.country,
       pronunciation: gift.pronunciation || null,
       meaning: gift.meaning,
-      timestamp: gift.timestamp
+      poem: gift.poem,
+      timestamp: Date.now()
     });
-    return true;
+    return id;
   } catch (error) {
     console.error('Error saving gift:', error);
-    return false;
+    return null;
   }
 };

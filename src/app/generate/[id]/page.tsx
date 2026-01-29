@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.vercel.app';
-  const ogImageUrl = `${baseUrl}/api/og-gift?word=${encodeURIComponent(gift.word)}&country=${encodeURIComponent(gift.country)}&forPerson=${encodeURIComponent(gift.forPerson)}&meaning=${encodeURIComponent(gift.meaning)}`;
+  const ogImageUrl = `${baseUrl}/api/og-gift?word=${encodeURIComponent(gift.word)}&country=${encodeURIComponent(gift.country)}&withPerson=${encodeURIComponent(gift.withPerson)}&meaning=${encodeURIComponent(gift.meaning)}`;
 
   return {
-    title: `${gift.word} - Een woord voor ${gift.forPerson}`,
+    title: `${gift.word} - Een herinnering met ${gift.withPerson}`,
     description: gift.meaning,
     openGraph: {
-      title: `${gift.word} - Voor ${gift.forPerson}`,
+      title: `${gift.word} - Met ${gift.withPerson}`,
       description: gift.meaning,
       type: 'article',
       locale: 'nl_NL',
@@ -34,13 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `${gift.word} - Een woord voor ${gift.forPerson}`,
+          alt: `${gift.word} - Een herinnering met ${gift.withPerson}`,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${gift.word} - Voor ${gift.forPerson}`,
+      title: `${gift.word} - Met ${gift.withPerson}`,
       description: gift.meaning,
       images: [ogImageUrl],
     },

@@ -19,5 +19,11 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+
+    // Gifts collection - anyone can read and write
+    match /gifts/{giftId} {
+      allow read: if true;
+      allow write: if true;
+    }
   }
 }

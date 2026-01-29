@@ -1,7 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { WordCard, DeepDiveContent, Gift } from "./types";
 import { saveWord } from "./wordService";
-import { saveGift } from "./giftService";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 const ai = new GoogleGenAI({ apiKey });
@@ -125,32 +124,33 @@ export const generateWordCard = async (theme: string): Promise<WordCard | null> 
   }
 };
 
-// Generate a personal gift word based on a memory
+// Generate a personal gift word based on a memory (returns Gift without saving)
 export const generateGiftWord = async (
-  forPerson: string,
+  withPerson: string,
   memory: string,
   location: { lat: number; lng: number; name: string }
-): Promise<Gift | null> => {
+): Promise<Omit<Gift, 'id' | 'timestamp'> | null> => {
   if (!apiKey) return null;
 
   try {
     const prompt = `
-      Je bent een taalkundige en verhalenverteller. Iemand wil een persoonlijk woord cadeau geven.
+      Je bent een taalkundige, dichter en verhalenverteller. Iemand deelt een herinnering met een speciaal persoon.
 
-      Het woord is voor: "${forPerson}"
+      De herinnering is met: "${withPerson}"
       De herinnering: "${memory}"
       De plek: "${location.name}"
 
-      Zoek een bestaand onvertaalbaar woord uit een taal ergens ter wereld dat perfect past bij deze herinnering en persoon.
+      Zoek een bestaand onvertaalbaar woord uit een taal ergens ter wereld dat perfect past bij deze herinnering.
       Denk aan woorden zoals Saudade, Hygge, Wabi-sabi, Ubuntu, Komorebi, etc.
 
-      Het woord moet de essentie van de herinnering vangen.
+      Het woord moet de essentie van de herinnering en het gevoel vangen.
 
       Genereer een JSON object:
       - word: Het woord zelf
       - country: Het land of de taal van herkomst
       - pronunciation: Fonetische uitspraak
-      - meaning: Een warme, persoonlijke betekenis die specifiek verwijst naar de herinnering en de persoon (2-3 zinnen, schrijf "jij" of de naam van de persoon)
+      - meaning: Een warme betekenis die de essentie van de herinnering vangt (2-3 zinnen)
+      - poem: Een kort, persoonlijk gedicht van 4 regels geïnspireerd op de herinnering. Het gedicht moet subtiel verwijzen naar de herinnering zonder deze letterlijk te herhalen. Maak het poëtisch en ontroerend.
 
       Schrijf alles in het Nederlands.
     `;
@@ -166,9 +166,10 @@ export const generateGiftWord = async (
             word: { type: Type.STRING },
             country: { type: Type.STRING },
             pronunciation: { type: Type.STRING },
-            meaning: { type: Type.STRING }
+            meaning: { type: Type.STRING },
+            poem: { type: Type.STRING }
           },
-          required: ["word", "country", "meaning"]
+          required: ["word", "country", "meaning", "poem"]
         }
       }
     });
@@ -177,24 +178,17 @@ export const generateGiftWord = async (
     if (!text) return null;
 
     const data = JSON.parse(text);
-    const id = `gift-${Date.now()}`;
 
-    const gift: Gift = {
-      id,
-      forPerson,
+    return {
+      withPerson,
       memory,
       location,
       word: data.word,
       country: data.country,
       pronunciation: data.pronunciation,
       meaning: data.meaning,
-      timestamp: Date.now()
+      poem: data.poem
     };
-
-    // Save to Firestore
-    await saveGift(gift);
-
-    return gift;
 
   } catch (error) {
     console.error("Gemini gift generation error:", error);

@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const word = searchParams.get('word') || 'Emberwords';
   const country = searchParams.get('country') || '';
-  const forPerson = searchParams.get('forPerson') || '';
+  const withPerson = searchParams.get('withPerson') || '';
   const meaning = searchParams.get('meaning') || '';
 
   // Truncate meaning if too long
@@ -49,8 +49,8 @@ export async function GET(request: NextRequest) {
             zIndex: 10,
           }}
         >
-          {/* For Person Badge */}
-          {forPerson && (
+          {/* With Person Badge */}
+          {withPerson && (
             <div
               style={{
                 display: 'flex',
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
                 marginBottom: 24,
               }}
             >
-              <span style={{ fontSize: 20, color: '#92400e' }}>Voor {forPerson}</span>
+              <span style={{ fontSize: 20, color: '#92400e' }}>Een herinnering met {withPerson}</span>
             </div>
           )}
 
