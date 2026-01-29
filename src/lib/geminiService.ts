@@ -2,16 +2,20 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { WordCard, DeepDiveContent, Gift } from "./types";
 import { saveWord } from "./wordService";
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 const ai = new GoogleGenAI({ apiKey });
 
-export const generateDeepDive = async (word: string, country: string): Promise<DeepDiveContent | null> => {
+export const generateDeepDive = async (
+  word: string,
+  country: string,
+): Promise<DeepDiveContent | null> => {
   if (!apiKey) {
     console.warn("No API Key found for Gemini");
     return {
       culturalContext: "API Key ontbreekt. Kan geen diepere context genereren.",
-      philosophicalInsight: "De essentie van dit woord wacht om ontdekt te worden.",
-      exampleUsage: "Niet beschikbaar."
+      philosophicalInsight:
+        "De essentie van dit woord wacht om ontdekt te worden.",
+      exampleUsage: "Niet beschikbaar.",
     };
   }
 
@@ -29,7 +33,7 @@ export const generateDeepDive = async (word: string, country: string): Promise<D
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: "gemini-3-flash-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -38,17 +42,16 @@ export const generateDeepDive = async (word: string, country: string): Promise<D
           properties: {
             culturalContext: { type: Type.STRING },
             philosophicalInsight: { type: Type.STRING },
-            exampleUsage: { type: Type.STRING }
+            exampleUsage: { type: Type.STRING },
           },
-          required: ["culturalContext", "philosophicalInsight", "exampleUsage"]
-        }
-      }
+          required: ["culturalContext", "philosophicalInsight", "exampleUsage"],
+        },
+      },
     });
 
     const text = response.text;
     if (!text) return null;
     return JSON.parse(text) as DeepDiveContent;
-
   } catch (error) {
     console.error("Gemini generation error:", error);
     return null;
@@ -56,7 +59,9 @@ export const generateDeepDive = async (word: string, country: string): Promise<D
 };
 
 // Generate a complete WordCard with DeepDive content and save to Firestore
-export const generateWordCard = async (theme: string): Promise<WordCard | null> => {
+export const generateWordCard = async (
+  theme: string,
+): Promise<WordCard | null> => {
   if (!apiKey) return null;
 
   try {
@@ -75,7 +80,7 @@ export const generateWordCard = async (theme: string): Promise<WordCard | null> 
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: "gemini-3-flash-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -86,11 +91,11 @@ export const generateWordCard = async (theme: string): Promise<WordCard | null> 
             country: { type: Type.STRING },
             pronunciation: { type: Type.STRING },
             shortDefinition: { type: Type.STRING },
-            question: { type: Type.STRING }
+            question: { type: Type.STRING },
           },
-          required: ["word", "country", "shortDefinition", "question"]
-        }
-      }
+          required: ["word", "country", "shortDefinition", "question"],
+        },
+      },
     });
 
     const text = response.text;
@@ -110,14 +115,13 @@ export const generateWordCard = async (theme: string): Promise<WordCard | null> 
       pronunciation: data.pronunciation,
       shortDefinition: data.shortDefinition,
       question: data.question,
-      deepDive: deepDive || undefined
+      deepDive: deepDive || undefined,
     };
 
     // Save to Firestore
     await saveWord(wordCard);
 
     return wordCard;
-
   } catch (error) {
     console.error("Gemini card generation error:", error);
     return null;
@@ -128,8 +132,8 @@ export const generateWordCard = async (theme: string): Promise<WordCard | null> 
 export const generateGiftWord = async (
   withPerson: string,
   memory: string,
-  location: { lat: number; lng: number; name: string }
-): Promise<Omit<Gift, 'id' | 'timestamp'> | null> => {
+  location: { lat: number; lng: number; name: string },
+): Promise<Omit<Gift, "id" | "timestamp"> | null> => {
   if (!apiKey) return null;
 
   try {
@@ -146,7 +150,7 @@ export const generateGiftWord = async (
       - Regionale talen en dialecten (Zeeuws, Drents, Limburgs, Fries, Twents, Brabants, etc.)
       - Lokale uitdrukkingen die passen bij de plek van de herinnering
 
-      Kies het woord dat het BESTE past bij de herinnering en de plek.
+      Kies het woord dat het BESTE past bij de herinnering en de plek. Lokaal heeft de voorkeur.
 
       BELANGRIJK - Schrijf ALTIJD vanuit "ons/wij/jij en ik" perspectief:
       - Dit is een verhaal van mij AAN ${withPerson}
@@ -165,7 +169,7 @@ export const generateGiftWord = async (
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: "gemini-3-flash-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -176,11 +180,11 @@ export const generateGiftWord = async (
             country: { type: Type.STRING },
             pronunciation: { type: Type.STRING },
             meaning: { type: Type.STRING },
-            poem: { type: Type.STRING }
+            poem: { type: Type.STRING },
           },
-          required: ["word", "country", "meaning", "poem"]
-        }
-      }
+          required: ["word", "country", "meaning", "poem"],
+        },
+      },
     });
 
     const text = response.text;
@@ -196,9 +200,8 @@ export const generateGiftWord = async (
       country: data.country,
       pronunciation: data.pronunciation,
       meaning: data.meaning,
-      poem: data.poem
+      poem: data.poem,
     };
-
   } catch (error) {
     console.error("Gemini gift generation error:", error);
     return null;

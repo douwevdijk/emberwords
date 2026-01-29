@@ -54,9 +54,10 @@ export default function PlacesAutocomplete({ onSelect }: PlacesAutocompleteProps
   useEffect(() => {
     if (!isLoaded || !inputRef.current) return;
 
-    // Initialize autocomplete
+    // Initialize autocomplete - only cities, towns, and regions
     autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
       fields: ['geometry', 'name', 'formatted_address', 'address_components'],
+      types: ['(regions)'],
     });
 
     // Listen for place selection
@@ -109,7 +110,7 @@ export default function PlacesAutocomplete({ onSelect }: PlacesAutocompleteProps
       <input
         ref={inputRef}
         type="text"
-        placeholder="Zoek een plaats, restaurant, cafe..."
+        placeholder="Zoek een stad, dorp of land..."
         className="w-full pl-10 pr-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-stone-800"
       />
     </div>
