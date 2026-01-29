@@ -224,7 +224,7 @@ export const generateGiftWord = async (
       country: data.country,
       pronunciation: data.pronunciation,
       meaning: data.meaning,
-      poem: data.poem,
+      poem: data.poem?.replace(/\\n/g, '\n') || data.poem,
     };
   } catch (error) {
     console.error("Gemini gift generation error:", error);
