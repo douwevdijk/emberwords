@@ -134,35 +134,34 @@ export const generateGiftWord = async (
 
   try {
     const prompt = `
-      Je bent een taalkundige, dichter en verhalenverteller. Iemand deelt een herinnering met een speciaal persoon.
+      Je bent een taalkundige, dichter en verhalenverteller. Iemand schrijft een persoonlijk verhaal aan ${withPerson}.
 
-      De herinnering is met: "${withPerson}"
       De herinnering: "${memory}"
       De plek: "${location.name}"
 
-      Zoek een passend onvertaalbaar woord dat de essentie van deze specifieke herinnering vangt.
+      Zoek een passend onvertaalbaar woord dat de essentie van ONZE gedeelde herinnering vangt.
 
       Het woord mag komen uit:
       - Wereldtalen (Japans, Deens, Portugees, etc.)
       - Regionale talen en dialecten (Zeeuws, Drents, Limburgs, Fries, Twents, Brabants, etc.)
       - Lokale uitdrukkingen die passen bij de plek van de herinnering
 
-      Kies het woord dat het BESTE past bij de herinnering en de plek. Als de herinnering in Zeeland plaatsvond, overweeg een Zeeuws woord. Als het in Drenthe was, overweeg Drents. Maar kies altijd het woord dat de essentie het beste vangt.
+      Kies het woord dat het BESTE past bij de herinnering en de plek.
 
-      BELANGRIJK voor de meaning:
-      - De meaning MOET direct verwijzen naar de concrete details uit de herinnering
-      - Noem specifieke elementen die de persoon beschreef
-      - Begin met iets als "Die momenten dat..." of "Zoals toen..." en verwijs naar wat er echt gebeurde
-      - Maak het persoonlijk en herkenbaar voor degene die de herinnering deelde
+      BELANGRIJK - Schrijf ALTIJD vanuit "ons/wij/jij en ik" perspectief:
+      - Dit is een verhaal van mij AAN ${withPerson}
+      - Gebruik "wij", "ons", "jij", "samen"
+      - Het woord beschrijft ONZE herinnering, ons moment samen
+      - De lezer (${withPerson}) moet zich aangesproken voelen
 
       Genereer een JSON object:
       - word: Het woord zelf
       - country: De taal of regio van herkomst (bijv. "Zeeuws", "Japans", "Limburgs", "Deens")
       - pronunciation: Fonetische uitspraak
-      - meaning: Begin met een directe verwijzing naar de herinnering (2 zinnen), gevolgd door de bredere betekenis van het woord (2-3 zinnen). De lezer moet zijn eigen verhaal herkennen.
-      - poem: Een persoonlijk gedicht van 6-8 regels. Het gedicht moet concreet verwijzen naar elementen uit de herinnering en eindigen met een gevoel van warmte of verbondenheid.
+      - meaning: Een persoonlijk verhaal aan ${withPerson} (4-5 zinnen). Begin met iets als "Weet je nog toen wij..." of "Dit woord is van ons, ${withPerson}...". Verwijs naar concrete details uit de herinnering. Eindig met wat dit moment voor ons betekent.
+      - poem: Een persoonlijk gedicht van 6-8 regels, geschreven aan ${withPerson}. Gebruik "jij", "wij", "ons". Het gedicht moet concreet verwijzen naar de herinnering en eindigen met warmte en verbondenheid.
 
-      Schrijf alles in het Nederlands. Wees specifiek, persoonlijk en ontroerend.
+      Schrijf alles in het Nederlands. Wees intiem, persoonlijk en ontroerend.
     `;
 
     const response = await ai.models.generateContent({
