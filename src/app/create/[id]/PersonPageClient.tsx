@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Flame, Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2, Copy, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { Person, Gift } from '@/lib/types';
@@ -11,7 +12,7 @@ import { getCountryFlag } from '@/lib/countryFlags';
 import TwemojiFlag from '@/components/TwemojiFlag';
 import Toast from '@/components/Toast';
 
-const PlacesAutocomplete = lazy(() => import('@/components/PlacesAutocomplete'));
+const PlacesAutocomplete = dynamic(() => import('@/components/PlacesAutocomplete'), { ssr: false });
 
 type ViewState = 'list' | 'form' | 'preview';
 
