@@ -272,18 +272,6 @@ export default function GeneratePage() {
             </p>
           </div>
 
-          {/* Memory Section */}
-          <div className="bg-stone-50 rounded-2xl p-6 mb-6 border border-stone-100">
-            <h3 className="text-xs uppercase tracking-widest text-stone-400 mb-3">De herinnering met {generatedGift.withPerson}</h3>
-            <p className="text-stone-700 leading-relaxed">{generatedGift.memory}</p>
-
-            {/* Location */}
-            <div className="flex items-center gap-2 mt-4 text-stone-500 text-sm">
-              <MapPin size={16} className="text-amber-500" />
-              <span>{generatedGift.location.name}</span>
-            </div>
-          </div>
-
           {/* Poem Section */}
           <div className="bg-amber-50 rounded-2xl p-6 mb-8 border border-amber-100">
             <p className="text-stone-700 leading-relaxed font-serif italic text-center whitespace-pre-line">

@@ -141,7 +141,7 @@ export const generateGiftWord = async (
       De plek: "${location.name}"
 
       Zoek een bestaand onvertaalbaar woord uit een taal ergens ter wereld dat perfect past bij deze herinnering.
-      Denk aan woorden zoals Saudade, Hygge, Wabi-sabi, Ubuntu, Komorebi, etc.
+      Denk aan woorden zoals Saudade, Hygge, Wabi-sabi, Ubuntu, Komorebi, Gezelligheid, Fernweh, etc.
 
       Het woord moet de essentie van de herinnering en het gevoel vangen.
 
@@ -149,10 +149,10 @@ export const generateGiftWord = async (
       - word: Het woord zelf
       - country: Het land of de taal van herkomst
       - pronunciation: Fonetische uitspraak
-      - meaning: Een warme betekenis die de essentie van de herinnering vangt (2-3 zinnen)
-      - poem: Een kort, persoonlijk gedicht van 4 regels geïnspireerd op de herinnering. Het gedicht moet subtiel verwijzen naar de herinnering zonder deze letterlijk te herhalen. Maak het poëtisch en ontroerend.
+      - meaning: Een warme, poëtische en uitgebreide betekenis die de essentie van de herinnering vangt. Schrijf dit als een kleine beschouwing van 4-6 zinnen. Maak het persoonlijk en ontroerend, zonder de originele herinnering letterlijk te herhalen.
+      - poem: Een persoonlijk gedicht van 6-8 regels geïnspireerd op de herinnering en het woord. Het gedicht moet de sfeer van het moment oproepen, subtiel verwijzen naar de herinnering, en eindigen met een gevoel van warmte of verbondenheid. Gebruik beeldende taal.
 
-      Schrijf alles in het Nederlands.
+      Schrijf alles in het Nederlands. Wees poëtisch en ontroerend.
     `;
 
     const response = await ai.models.generateContent({
