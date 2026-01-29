@@ -2,6 +2,9 @@ import { Metadata } from 'next';
 import { getGiftById } from '@/lib/giftService';
 import GiftDetailClient from './GiftDetailClient';
 
+// Force dynamic rendering to ensure metadata is in initial HTML
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ id: string }>;
 }

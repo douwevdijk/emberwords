@@ -3,6 +3,9 @@ import { getPersonById } from '@/lib/personService';
 import { getGiftsByPersonId } from '@/lib/giftService';
 import PersonPageClient from './PersonPageClient';
 
+// Force dynamic rendering to ensure metadata is in initial HTML
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ id: string }>;
 }
