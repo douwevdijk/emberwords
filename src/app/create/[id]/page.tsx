@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { getPersonById } from '@/lib/personService';
-import { getGiftsByPersonId } from '@/lib/giftService';
 import PersonPageClient from './PersonPageClient';
 
 // Force dynamic rendering to ensure metadata is in initial HTML
@@ -22,13 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  // Get count of memories for this person
-  const gifts = await getGiftsByPersonId(id, false);
-  const count = gifts.length;
-
-  // Build OG image URL
+  // Build OG image URL (count is set to 0 to avoid extra DB call that causes suspense)
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
-  const ogImageUrl = `${baseUrl}/api/og-person?name=${encodeURIComponent(person.name)}&description=${encodeURIComponent(person.description || '')}&count=${count}`;
+  const ogImageUrl = `${baseUrl}/api/og-person?name=${encodeURIComponent(person.name)}&description=${encodeURIComponent(person.description || '')}&count=0`;
 
   return {
     title: `Herinneringen voor ${person.name} - Emberwords`,
