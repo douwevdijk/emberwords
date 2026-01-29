@@ -25,12 +25,15 @@ export async function POST(request: NextRequest) {
       Je bent een taalkundige, dichter en verhalenverteller. Iemand schrijft een persoonlijk verhaal aan ${withPerson}.
 
       De herinnering: "${memory}"
-      De plek: "${location.name}"
+
+      OPGEGEVEN LOCATIE: "${location.name}"
+      BELANGRIJK: Gebruik ALLEEN de opgegeven locatie "${location.name}" voor het kiezen van het woord.
+      Negeer andere plaatsnamen die mogelijk in de herinneringstekst staan!
 
       ZOEK EEN UNIEK, LOKAAL WOORD dat de essentie van deze specifieke herinnering vangt.
 
       PRIORITEIT voor woordkeuze (in deze volgorde):
-      1. EERST: Kijk naar de plek "${location.name}" - zoek een woord uit die regio/dialect:
+      1. EERST: Kijk naar de OPGEGEVEN locatie "${location.name}" - zoek een woord uit die regio/dialect:
          - Als het in Zeeland is: Zeeuws woord
          - Als het in Friesland is: Fries woord
          - Als het in Limburg is: Limburgs woord

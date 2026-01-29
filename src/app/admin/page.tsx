@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, BookOpen, Copy, QrCode, X, Download } from 'lucide-react';
+import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle, Sparkles, Check, BookOpen, Copy, QrCode, X, Download, Users } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { getAllMemories, getAllComments, deleteMemory, deleteComment } from '@/lib/memoryService';
 import { getAllWords, saveWord, deleteWord } from '@/lib/wordService';
-import { UserMemory, WordCard, Comment } from '@/lib/types';
+import { getAllPersons } from '@/lib/personService';
+import { UserMemory, WordCard, Comment, Person } from '@/lib/types';
 import { getCountryFlag } from '@/lib/countryFlags';
 import TwemojiFlag from '@/components/TwemojiFlag';
 import DeleteModal from '@/components/DeleteModal';
@@ -19,9 +20,11 @@ export default function AdminPage() {
   const [memories, setMemories] = useState<UserMemory[]>([]);
   const [comments, setComments] = useState<CommentWithMemory[]>([]);
   const [words, setWords] = useState<WordCard[]>([]);
+  const [persons, setPersons] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [activeTab, setActiveTab] = useState<'generate' | 'words' | 'memories' | 'comments'>('generate');
+  const [activeTab, setActiveTab] = useState<'generate' | 'words' | 'memories' | 'comments' | 'persons'>('generate');
+  const [copiedPersonId, setCopiedPersonId] = useState<string | null>(null);
 
   // Generate word state
   const [themeInput, setThemeInput] = useState('');
@@ -89,18 +92,30 @@ export default function AdminPage() {
     }
 
     const loadData = async () => {
-      const [memoriesData, commentsData, wordsData] = await Promise.all([
+      const [memoriesData, commentsData, wordsData, personsData] = await Promise.all([
         getAllMemories(),
         getAllComments(),
-        getAllWords()
+        getAllWords(),
+        getAllPersons()
       ]);
       setMemories(memoriesData);
       setComments(commentsData as CommentWithMemory[]);
       setWords(wordsData);
+      setPersons(personsData);
       setLoading(false);
     };
     loadData();
   }, []);
+
+  const handleCopyPersonLink = async (person: Person, type: 'public' | 'admin') => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    const url = type === 'admin'
+      ? `${baseUrl}/create/${person.id}?beheer=${person.adminToken}`
+      : `${baseUrl}/create/${person.id}`;
+    await navigator.clipboard.writeText(url);
+    setCopiedPersonId(`${person.id}-${type}`);
+    setTimeout(() => setCopiedPersonId(null), 2000);
+  };
 
   const getWordForMemory = (cardId: string) => {
     return words.find(w => w.id === cardId);
@@ -248,6 +263,19 @@ export default function AdminPage() {
             }`}
           >
             Reacties ({comments.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('persons')}
+            className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors text-sm sm:text-base ${
+              activeTab === 'persons'
+                ? 'bg-stone-900 text-white'
+                : 'bg-white text-stone-600 hover:bg-stone-100'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Users size={16} />
+              Personen ({persons.length})
+            </span>
           </button>
         </div>
 
@@ -513,6 +541,58 @@ export default function AdminPage() {
                     >
                       <Trash2 size={18} />
                     </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* Persons Tab */}
+        {activeTab === 'persons' && (
+          <div className="space-y-4">
+            {persons.length === 0 ? (
+              <p className="text-stone-500 text-center py-12">Geen personen gevonden</p>
+            ) : (
+              persons.map(person => (
+                <div key={person.id} className="bg-white rounded-xl p-4 border border-stone-200 shadow-sm">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Users size={18} className="text-amber-500" />
+                        <span className="font-serif text-lg text-stone-800">{person.name}</span>
+                      </div>
+                      {person.description && (
+                        <p className="text-stone-500 text-sm mb-2">{person.description}</p>
+                      )}
+                      <p className="text-xs text-stone-400 mb-3">
+                        Aangemaakt: {new Date(person.timestamp).toLocaleDateString('nl-NL')}
+                      </p>
+
+                      {/* Links */}
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => handleCopyPersonLink(person, 'public')}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-xs transition-colors"
+                        >
+                          {copiedPersonId === `${person.id}-public` ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                          {copiedPersonId === `${person.id}-public` ? 'Gekopieerd!' : 'Deellink'}
+                        </button>
+                        <button
+                          onClick={() => handleCopyPersonLink(person, 'admin')}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg text-xs transition-colors"
+                        >
+                          {copiedPersonId === `${person.id}-admin` ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+                          {copiedPersonId === `${person.id}-admin` ? 'Gekopieerd!' : 'Beheerlink'}
+                        </button>
+                        <Link
+                          href={`/create/${person.id}`}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-lg text-xs transition-colors"
+                        >
+                          Bekijk pagina →
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))

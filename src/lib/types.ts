@@ -40,6 +40,7 @@ export interface Comment {
 export interface Gift {
   id: string;
   withPerson: string;
+  authorName?: string;
   memory: string;
   location: {
     lat: number;
@@ -53,5 +54,16 @@ export interface Gift {
   pronunciation?: string;
   meaning: string;
   poem: string;
+  timestamp: number;
+  personId?: string;
+  hidden?: boolean;
+}
+
+export interface Person {
+  id: string;
+  name: string;
+  description?: string;
+  creatorEmail: string;
+  adminToken: string;
   timestamp: number;
 }
