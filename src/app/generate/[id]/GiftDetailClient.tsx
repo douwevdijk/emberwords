@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import { Copy, Users } from 'lucide-react';
+import { Copy, Users, Loader2 } from 'lucide-react';
 import { Gift } from '@/lib/types';
 import { getCountryFlag } from '@/lib/countryFlags';
 import TwemojiFlag from '@/components/TwemojiFlag';
@@ -14,6 +14,7 @@ interface Props {
 
 export default function GiftDetailClient({ gift }: Props) {
   const [showToast, setShowToast] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleShare = useCallback(async () => {
     const url = window.location.href;
@@ -81,10 +82,15 @@ export default function GiftDetailClient({ gift }: Props) {
           {gift.personId && (
             <Link
               href={`/create/${gift.personId}`}
+              onClick={() => setIsNavigating(true)}
               className="w-full lg:w-auto lg:px-12 lg:mx-auto flex items-center justify-center gap-3 py-3 text-amber-600 hover:text-amber-700 font-medium transition-colors"
             >
-              <Users size={20} />
-              Bekijk alle herinneringen
+              {isNavigating ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                <Users size={20} />
+              )}
+              {isNavigating ? 'Laden...' : 'Bekijk alle herinneringen'}
             </Link>
           )}
         </div>
