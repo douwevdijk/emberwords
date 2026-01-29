@@ -2,7 +2,9 @@
 
 import { useState, lazy, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2, Heart } from 'lucide-react';
+import Link from 'next/link';
+import { Heart, Loader2, MapPin, Navigation, Sparkles, RefreshCw, Share2 } from 'lucide-react';
+import { generateGiftWord } from '@/lib/geminiService';
 import { saveGift } from '@/lib/giftService';
 import { Gift } from '@/lib/types';
 import { getCurrentPosition, getAddressFromCoords, LocationResult } from '@/lib/locationService';
@@ -62,16 +64,11 @@ export default function GeneratePage() {
 
     setIsGenerating(true);
 
-    const response = await fetch('/api/generate-word', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        withPerson: withPerson.trim(),
-        memory: memory.trim(),
-        location: { lat: location.lat, lng: location.lng, name: location.name }
-      }),
-    });
-    const result = response.ok ? await response.json() : null;
+    const result = await generateGiftWord(
+      withPerson.trim(),
+      memory.trim(),
+      { lat: location.lat, lng: location.lng, name: location.name }
+    );
 
     if (result) {
       setGeneratedGift(result);
@@ -84,16 +81,11 @@ export default function GeneratePage() {
 
   const handleRegenerate = async () => {
     setIsGenerating(true);
-    const response = await fetch('/api/generate-word', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        withPerson: withPerson.trim(),
-        memory: memory.trim(),
-        location: { lat: location!.lat, lng: location!.lng, name: location!.name }
-      }),
-    });
-    const result = response.ok ? await response.json() : null;
+    const result = await generateGiftWord(
+      withPerson.trim(),
+      memory.trim(),
+      { lat: location!.lat, lng: location!.lng, name: location!.name }
+    );
 
     if (result) {
       setGeneratedGift(result);

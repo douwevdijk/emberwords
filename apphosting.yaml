@@ -4,5 +4,5 @@ runConfig:
   concurrency: 80
 
 env:
-  - variable: GEMINI_API_KEY
+  - variable: NEXT_PUBLIC_GEMINI_API_KEY
     secret: gemini-api-key

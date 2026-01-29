@@ -36,7 +36,7 @@ WereldWoorden is a Dutch-language Next.js 16 app for discovering untranslatable 
 - `DeepDiveContent` - Extended content: culturalContext, philosophicalInsight, exampleUsage
 
 ### Environment Variables
-- `GEMINI_API_KEY` - Required for AI word generation (server-side only)
+- `NEXT_PUBLIC_GEMINI_API_KEY` - Required for AI word generation
 
 ### Path Aliases
 - `@/*` maps to `./src/*`
