@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.vercel.app';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
 
 export const metadata: Metadata = {
   title: 'Een herinnering vastleggen - Emberwords',

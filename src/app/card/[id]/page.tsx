@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords--firebase-me-do.europe-west4.hosted.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
   const ogImageUrl = `${baseUrl}/api/og?word=${encodeURIComponent(card.word)}&country=${encodeURIComponent(card.country)}&definition=${encodeURIComponent(card.shortDefinition)}`;
 
   return {

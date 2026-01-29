@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberwords.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://emberword.com';
   const ogImageUrl = `${baseUrl}/api/og-gift?word=${encodeURIComponent(gift.word)}&country=${encodeURIComponent(gift.country)}&withPerson=${encodeURIComponent(gift.withPerson)}&meaning=${encodeURIComponent(gift.meaning)}`;
 
   return {
