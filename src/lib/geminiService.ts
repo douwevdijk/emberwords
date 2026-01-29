@@ -140,19 +140,29 @@ export const generateGiftWord = async (
       De herinnering: "${memory}"
       De plek: "${location.name}"
 
-      Zoek een bestaand onvertaalbaar woord uit een taal ergens ter wereld dat perfect past bij deze herinnering.
-      Denk aan woorden zoals Saudade, Hygge, Wabi-sabi, Ubuntu, Komorebi, Gezelligheid, Fernweh, etc.
+      Zoek een passend onvertaalbaar woord dat de essentie van deze specifieke herinnering vangt.
 
-      Het woord moet de essentie van de herinnering en het gevoel vangen.
+      Het woord mag komen uit:
+      - Wereldtalen (Japans, Deens, Portugees, etc.)
+      - Regionale talen en dialecten (Zeeuws, Drents, Limburgs, Fries, Twents, Brabants, etc.)
+      - Lokale uitdrukkingen die passen bij de plek van de herinnering
+
+      Kies het woord dat het BESTE past bij de herinnering en de plek. Als de herinnering in Zeeland plaatsvond, overweeg een Zeeuws woord. Als het in Drenthe was, overweeg Drents. Maar kies altijd het woord dat de essentie het beste vangt.
+
+      BELANGRIJK voor de meaning:
+      - De meaning MOET direct verwijzen naar de concrete details uit de herinnering
+      - Noem specifieke elementen die de persoon beschreef
+      - Begin met iets als "Die momenten dat..." of "Zoals toen..." en verwijs naar wat er echt gebeurde
+      - Maak het persoonlijk en herkenbaar voor degene die de herinnering deelde
 
       Genereer een JSON object:
       - word: Het woord zelf
-      - country: Het land of de taal van herkomst
+      - country: De taal of regio van herkomst (bijv. "Zeeuws", "Japans", "Limburgs", "Deens")
       - pronunciation: Fonetische uitspraak
-      - meaning: Een warme, poëtische en uitgebreide betekenis die de essentie van de herinnering vangt. Schrijf dit als een kleine beschouwing van 4-6 zinnen. Maak het persoonlijk en ontroerend, zonder de originele herinnering letterlijk te herhalen.
-      - poem: Een persoonlijk gedicht van 6-8 regels geïnspireerd op de herinnering en het woord. Het gedicht moet de sfeer van het moment oproepen, subtiel verwijzen naar de herinnering, en eindigen met een gevoel van warmte of verbondenheid. Gebruik beeldende taal.
+      - meaning: Begin met een directe verwijzing naar de herinnering (2 zinnen), gevolgd door de bredere betekenis van het woord (2-3 zinnen). De lezer moet zijn eigen verhaal herkennen.
+      - poem: Een persoonlijk gedicht van 6-8 regels. Het gedicht moet concreet verwijzen naar elementen uit de herinnering en eindigen met een gevoel van warmte of verbondenheid.
 
-      Schrijf alles in het Nederlands. Wees poëtisch en ontroerend.
+      Schrijf alles in het Nederlands. Wees specifiek, persoonlijk en ontroerend.
     `;
 
     const response = await ai.models.generateContent({
