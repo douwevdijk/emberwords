@@ -6,7 +6,6 @@ import { ArrowLeft, Trash2, Loader2, MapPin, User, MessageCircle, AlertTriangle,
 import { QRCodeSVG } from 'qrcode.react';
 import { getAllMemories, getAllComments, deleteMemory, deleteComment } from '@/lib/memoryService';
 import { getAllWords, saveWord, deleteWord } from '@/lib/wordService';
-import { generateWordCard } from '@/lib/geminiService';
 import { UserMemory, WordCard, Comment } from '@/lib/types';
 import { getCountryFlag } from '@/lib/countryFlags';
 import TwemojiFlag from '@/components/TwemojiFlag';
@@ -113,7 +112,12 @@ export default function AdminPage() {
 
     setIsGenerating(true);
     try {
-      const card = await generateWordCard(themeInput);
+      const response = await fetch('/api/generate-card', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ theme: themeInput }),
+      });
+      const card = response.ok ? await response.json() : null;
       if (card) {
         setGeneratedCard(card);
       }
