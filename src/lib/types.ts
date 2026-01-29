@@ -36,3 +36,19 @@ export interface Comment {
   text: string;
   timestamp: number;
 }
+
+export interface Gift {
+  id: string;
+  forPerson: string;
+  memory: string;
+  location: {
+    lat: number;
+    lng: number;
+    name: string;
+  };
+  word: string;
+  country: string;
+  pronunciation?: string;
+  meaning: string;
+  timestamp: number;
+}
