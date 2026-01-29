@@ -174,15 +174,16 @@ export const generateGiftWord = async (
       - country: De taal of regio van herkomst (bijv. "Zeeuws", "Fries", "Limburgs", "Welsh", "Schots-Gaelisch")
       - pronunciation: Fonetische uitspraak
       - meaning: Een persoonlijk verhaal aan ${withPerson} (4-5 zinnen). Begin met iets als "Weet je nog toen wij..." of "Dit woord is van ons, ${withPerson}...". Verwijs naar concrete details uit de herinnering. Eindig met wat dit moment voor ons betekent.
-      - poem: Een meesterlijk gedicht van 6-8 regels, geschreven aan ${withPerson}.
+      - poem: Een meesterlijk gedicht van 6-8 regels dat het woord en de herinnering samensmelt.
         Schrijf dit gedicht alsof je een van de beste dichters ter wereld bent - denk aan de stijl van Rutger Kopland, Toon Tellegen, of Remco Campert.
         Het gedicht moet:
+        - Het woord en de herinnering verweven tot één geheel
         - Subtiel en beeldend zijn, niet letterlijk
         - Eenvoudige maar krachtige woorden gebruiken
         - Een onverwachte wending of beeld bevatten
         - Ruimte laten voor interpretatie
         - Eindigen met een regel die blijft hangen
-        Gebruik "jij", "wij", "ons". Verwijs indirect naar de herinnering.
+        NIET schrijven aan een persoon, maar over het moment, het gevoel, de herinnering zelf.
 
       Schrijf alles in het Nederlands. Wees intiem, persoonlijk en ontroerend.
     `;
