@@ -1,0 +1,90 @@
+[debug] [2026-02-01T07:49:51.869Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:51.873Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:51.873Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:51.874Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:51.875Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.875Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.875Z] > refreshing access token with scopes: []
+[debug] [2026-02-01T07:49:51.877Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-01T07:49:51.878Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:51.906Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.906Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.906Z] > refreshing access token with scopes: []
+[debug] [2026-02-01T07:49:51.906Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-01T07:49:51.906Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:51.908Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:51.908Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:51.908Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.908Z] Checked if tokens are valid: false, expires at: 1769775564861
+[debug] [2026-02-01T07:49:51.908Z] > refreshing access token with scopes: []
+[debug] [2026-02-01T07:49:51.909Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-01T07:49:51.909Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:52.068Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-01T07:49:52.068Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:52.112Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo [none]
+[debug] [2026-02-01T07:49:52.116Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-01T07:49:52.117Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:52.159Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo [none]
+[debug] [2026-02-01T07:49:52.161Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-01T07:49:52.161Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-01T07:49:52.205Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo [none]
+[debug] [2026-02-01T07:49:52.678Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo 200
+[debug] [2026-02-01T07:49:52.678Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo {"name":"projects/firebase-me-do/billingInfo","projectId":"firebase-me-do","billingAccountName":"billingAccounts/001CC2-3059B8-F21528","billingEnabled":true}
+[debug] [2026-02-01T07:49:52.684Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:52.684Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:52.696Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:52.696Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:52.697Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-01T07:49:52.697Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:52.698Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [none]
+[debug] [2026-02-01T07:49:52.698Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:53.553Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo 200
+[debug] [2026-02-01T07:49:53.553Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo {"name":"projects/firebase-me-do/billingInfo","projectId":"firebase-me-do","billingAccountName":"billingAccounts/001CC2-3059B8-F21528","billingEnabled":true}
+[debug] [2026-02-01T07:49:53.559Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.559Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.563Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.563Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.563Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-01T07:49:53.563Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:53.565Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [none]
+[debug] [2026-02-01T07:49:53.565Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:53.630Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo 200
+[debug] [2026-02-01T07:49:53.630Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo {"name":"projects/firebase-me-do/billingInfo","projectId":"firebase-me-do","billingAccountName":"billingAccounts/001CC2-3059B8-F21528","billingEnabled":true}
+[debug] [2026-02-01T07:49:53.631Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.631Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.634Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.634Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:53.634Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [none]
+[debug] [2026-02-01T07:49:53.634Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:53.635Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [none]
+[debug] [2026-02-01T07:49:53.635Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com  x-goog-user-project=firebase-me-do
+[debug] [2026-02-01T07:49:53.769Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com 403
+[debug] [2026-02-01T07:49:53.769Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [omitted]
+[debug] [2026-02-01T07:49:54.025Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-01T07:49:54.025Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-01T07:49:54.027Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:54.027Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:54.027Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:54.027Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:54.028Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo [none]
+[debug] [2026-02-01T07:49:54.407Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com 403
+[debug] [2026-02-01T07:49:54.407Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [omitted]
+[debug] [2026-02-01T07:49:54.598Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-01T07:49:54.598Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-01T07:49:54.600Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:54.600Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:54.600Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:54.600Z] Checked if tokens are valid: true, expires at: 1769935791161
+[debug] [2026-02-01T07:49:54.600Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo [none]
+[debug] [2026-02-01T07:49:54.741Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com 200
+[debug] [2026-02-01T07:49:54.741Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2026-02-01T07:49:54.859Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo 200
+[debug] [2026-02-01T07:49:54.859Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo {"name":"projects/firebase-me-do/billingInfo","projectId":"firebase-me-do","billingAccountName":"billingAccounts/001CC2-3059B8-F21528","billingEnabled":true}
+[debug] [2026-02-01T07:49:54.860Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:54.860Z] > authorizing via signed-in user (douwevdijk@gmail.com)
+[debug] [2026-02-01T07:49:55.026Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com 403
+[debug] [2026-02-01T07:49:55.026Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/firebase-me-do/services/firebaseio.com [omitted]
+[debug] [2026-02-01T07:49:55.225Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo 200
+[debug] [2026-02-01T07:49:55.225Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/firebase-me-do/billingInfo {"name":"projects/firebase-me-do/billingInfo","projectId":"firebase-me-do","billingAccountName":"billingAccounts/001CC2-3059B8-F21528","billingEnabled":true}
+[debug] [2026-02-01T07:49:55.227Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-01T07:49:55.227Z] > authorizing via signed-in user (douwevdijk@gmail.com)

@@ -63,7 +63,7 @@ export default function CreatePersonPage() {
             </div>
             <h1 className="font-serif text-2xl lg:text-4xl text-stone-800 mb-2 lg:mb-4">Herinneringen verzamelen</h1>
             <p className="text-stone-600 lg:text-lg">
-              Maak een pagina aan voor iemand en verzamel samen herinneringen.
+              Maak een pagina aan en verzamel samen herinneringen.
             </p>
           </div>
 
@@ -74,7 +74,7 @@ export default function CreatePersonPage() {
               <div>
                 <label className="block text-sm lg:text-base font-medium text-stone-700 mb-2 lg:mb-3">
                   <User size={16} className="inline mr-2" />
-                  Voor wie is deze pagina?
+                  Naam
                 </label>
                 <input
                   type="text"
@@ -94,7 +94,7 @@ export default function CreatePersonPage() {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Bijv. 'Voor opa's 80ste verjaardag'"
+                  placeholder="Bijv. 'Verjaardag van Tessa' of 'Teamuitje 2025'"
                   className="w-full h-24 lg:h-32 p-4 lg:text-lg border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none text-stone-800"
                 />
               </div>
