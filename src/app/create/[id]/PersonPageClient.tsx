@@ -354,7 +354,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
               <Sparkles size={32} className="text-amber-600" />
             </div>
             <h1 className="font-serif text-2xl text-stone-800 mb-2">
-              Herinnering met {person.name}
+              Herinnering voor {person.name}
             </h1>
             <p className="text-stone-600">
               Deel een bijzondere herinnering en ontdek welk woord erbij past.
