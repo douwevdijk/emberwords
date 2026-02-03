@@ -8,7 +8,7 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore';
-import { Person } from './types';
+import { Person, PersonType } from './types';
 
 const PERSONS_COLLECTION = 'persons';
 
@@ -18,11 +18,13 @@ const generateAdminToken = (): string => {
          Math.random().toString(36).substring(2, 15);
 };
 
-// Create a new person
+// Create a new person or event
 export const createPerson = async (
   name: string,
   description: string,
-  creatorEmail: string
+  creatorEmail: string,
+  type: PersonType = 'person',
+  location?: string
 ): Promise<{ id: string; adminToken: string } | null> => {
   try {
     const id = `person-${Date.now()}`;
@@ -32,6 +34,8 @@ export const createPerson = async (
     await setDoc(docRef, {
       name,
       description: description || null,
+      type,
+      location: location || null,
       creatorEmail,
       adminToken,
       timestamp: Date.now()

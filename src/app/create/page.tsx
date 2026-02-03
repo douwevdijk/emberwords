@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Flame, Loader2, User, FileText } from 'lucide-react';
+import { Flame, Loader2, User, FileText, Users, Calendar, MapPin } from 'lucide-react';
 import { createPerson } from '@/lib/personService';
+import { PersonType } from '@/lib/types';
 
 export default function CreatePersonPage() {
   const router = useRouter();
+  const [type, setType] = useState<PersonType>('person');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
   const handleCreate = async () => {
@@ -17,13 +20,22 @@ export default function CreatePersonPage() {
       return;
     }
 
+    if (type === 'event' && !location.trim()) {
+      alert('Vul een locatie in voor het event');
+      return;
+    }
+
     setIsCreating(true);
 
-    const result = await createPerson(name.trim(), description.trim(), '');
+    const result = await createPerson(
+      name.trim(),
+      description.trim(),
+      '',
+      type,
+      type === 'event' ? location.trim() : undefined
+    );
 
     if (result) {
-      // Send admin email (we'll implement this later, for now show token in URL)
-      // For now, redirect to person page with admin token
       router.push(`/create/${result.id}?beheer=${result.adminToken}`);
     } else {
       alert('Er ging iets mis. Probeer opnieuw.');
@@ -70,17 +82,51 @@ export default function CreatePersonPage() {
           {/* Form Card */}
           <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12 border border-stone-100">
             <div className="space-y-6 lg:space-y-8">
+              {/* Type Selection */}
+              <div>
+                <label className="block text-sm lg:text-base font-medium text-stone-700 mb-3">
+                  Waar is deze pagina voor?
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setType('person')}
+                    className={`flex flex-col items-center gap-2 p-4 lg:p-6 rounded-xl border-2 transition-all ${
+                      type === 'person'
+                        ? 'border-amber-500 bg-amber-50 text-stone-800'
+                        : 'border-stone-200 bg-white text-stone-500 hover:border-stone-300'
+                    }`}
+                  >
+                    <Users size={24} />
+                    <span className="font-medium text-sm lg:text-base">Persoon</span>
+                  </button>
+                  <button
+                    onClick={() => setType('event')}
+                    className={`flex flex-col items-center gap-2 p-4 lg:p-6 rounded-xl border-2 transition-all ${
+                      type === 'event'
+                        ? 'border-amber-500 bg-amber-50 text-stone-800'
+                        : 'border-stone-200 bg-white text-stone-500 hover:border-stone-300'
+                    }`}
+                  >
+                    <Calendar size={24} />
+                    <span className="font-medium text-sm lg:text-base">Sessie / Event</span>
+                  </button>
+                </div>
+              </div>
+
               {/* Name */}
               <div>
                 <label className="block text-sm lg:text-base font-medium text-stone-700 mb-2 lg:mb-3">
-                  <User size={16} className="inline mr-2" />
-                  Naam
+                  {type === 'person' ? (
+                    <><User size={16} className="inline mr-2" />Naam</>
+                  ) : (
+                    <><Calendar size={16} className="inline mr-2" />Naam van het event</>
+                  )}
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Naam"
+                  placeholder={type === 'person' ? 'Naam' : 'Bijv. Design Thinking Workshop'}
                   className="w-full px-4 py-3 lg:py-4 lg:text-lg border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-stone-800"
                 />
               </div>
@@ -89,20 +135,43 @@ export default function CreatePersonPage() {
               <div>
                 <label className="block text-sm lg:text-base font-medium text-stone-700 mb-2 lg:mb-3">
                   <FileText size={16} className="inline mr-2" />
-                  Korte beschrijving (optioneel)
+                  Korte beschrijving {type === 'event' ? '' : '(optioneel)'}
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Bijv. 'Verjaardag van Tessa' of 'Teamuitje 2025'"
+                  placeholder={type === 'person'
+                    ? "Bijv. 'Verjaardag van Tessa' of 'Teamuitje 2025'"
+                    : "Bijv. 'Een dag vol inspiratie en nieuwe inzichten'"
+                  }
                   className="w-full h-24 lg:h-32 p-4 lg:text-lg border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none text-stone-800"
                 />
               </div>
 
+              {/* Location (only for events) */}
+              {type === 'event' && (
+                <div>
+                  <label className="block text-sm lg:text-base font-medium text-stone-700 mb-2 lg:mb-3">
+                    <MapPin size={16} className="inline mr-2" />
+                    Locatie van het event
+                  </label>
+                  <input
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Bijv. Amsterdam, Barcelona, Bali"
+                    className="w-full px-4 py-3 lg:py-4 lg:text-lg border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-stone-800"
+                  />
+                  <p className="text-stone-400 text-xs mt-2">
+                    Het woord wordt gekozen uit de taal of het dialect van deze locatie.
+                  </p>
+                </div>
+              )}
+
               {/* Create Button */}
               <button
                 onClick={handleCreate}
-                disabled={isCreating || !name.trim()}
+                disabled={isCreating || !name.trim() || (type === 'event' && !location.trim())}
                 className="w-full lg:w-auto lg:px-12 lg:mx-auto lg:flex bg-stone-900 hover:bg-stone-800 disabled:bg-stone-300 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors shadow-lg mt-4"
               >
                 {isCreating ? (

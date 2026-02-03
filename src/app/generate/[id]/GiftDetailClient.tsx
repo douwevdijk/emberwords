@@ -62,12 +62,14 @@ export default function GiftDetailClient({ gift }: Props) {
             </p>
           </div>
 
-          {/* Poem Section */}
-          <div className="bg-amber-50 rounded-2xl p-6 lg:p-10 mb-8 lg:mb-10 border border-amber-100">
-            <p className="text-stone-700 lg:text-lg leading-relaxed font-serif italic text-center whitespace-pre-line">
-              {gift.poem}
-            </p>
-          </div>
+          {/* Poem Section - only shown when poem exists */}
+          {gift.poem && (
+            <div className="bg-amber-50 rounded-2xl p-6 lg:p-10 mb-8 lg:mb-10 border border-amber-100">
+              <p className="text-stone-700 lg:text-lg leading-relaxed font-serif italic text-center whitespace-pre-line">
+                {gift.poem}
+              </p>
+            </div>
+          )}
 
           {/* Share Button */}
           <button
@@ -90,7 +92,7 @@ export default function GiftDetailClient({ gift }: Props) {
               ) : (
                 <Users size={20} />
               )}
-              {isNavigating ? 'Laden...' : 'Bekijk alle herinneringen'}
+              {isNavigating ? 'Laden...' : 'Bekijk alle woorden'}
             </Link>
           )}
         </div>

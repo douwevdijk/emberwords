@@ -23,6 +23,7 @@ interface Props {
 
 export default function PersonPageClient({ person, adminToken }: Props) {
   const router = useRouter();
+  const isEvent = person.type === 'event';
 
   const [viewState, setViewState] = useState<ViewState>('list');
   const [isAdmin, setIsAdmin] = useState(false);
@@ -82,16 +83,34 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     setLocation(result);
   };
 
+  const buildRequestBody = () => {
+    if (isEvent) {
+      return {
+        type: 'event',
+        eventName: person.name,
+        eventDescription: person.description || '',
+        eventLocation: person.location || '',
+        memory: memory.trim(),
+      };
+    }
+    return {
+      type: 'person',
+      withPerson: person.name,
+      memory: memory.trim(),
+      location: { lat: location!.lat, lng: location!.lng, name: location!.name },
+    };
+  };
+
   const handleGenerate = async () => {
     if (!authorName.trim()) {
       alert('Vul je naam in');
       return;
     }
     if (!memory.trim()) {
-      alert('Deel een herinnering');
+      alert(isEvent ? 'Beschrijf je ervaring' : 'Deel een herinnering');
       return;
     }
-    if (!location) {
+    if (!isEvent && !location) {
       alert('Kies een locatie');
       return;
     }
@@ -101,11 +120,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     const response = await fetch('/api/generate-word', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        withPerson: person.name,
-        memory: memory.trim(),
-        location: { lat: location.lat, lng: location.lng, name: location.name }
-      }),
+      body: JSON.stringify(buildRequestBody()),
     });
     const result = response.ok ? await response.json() : null;
 
@@ -126,11 +141,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     const response = await fetch('/api/generate-word', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        withPerson: person.name,
-        memory: memory.trim(),
-        location: { lat: location!.lat, lng: location!.lng, name: location!.name }
-      }),
+      body: JSON.stringify(buildRequestBody()),
     });
     const result = response.ok ? await response.json() : null;
 
@@ -152,7 +163,6 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     const giftId = await saveGift(generatedGift as Gift);
 
     if (giftId) {
-      // Redirect to the shareable gift page
       router.push(`/generate/${giftId}`);
     } else {
       alert('Er ging iets mis bij het opslaan. Probeer opnieuw.');
@@ -188,7 +198,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     setShowToast(true);
   };
 
-  // LIST VIEW - Show person and memories
+  // LIST VIEW - Show person/event and memories
   if (viewState === 'list') {
     return (
       <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white overflow-auto">
@@ -196,7 +206,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
 
         <div className="flex flex-col items-center justify-start pt-8 lg:pt-16 min-h-screen p-6 lg:p-12">
           <div className="w-full max-w-6xl">
-            {/* Person Header */}
+            {/* Header */}
             <div className="text-center mb-8 lg:mb-12">
               <div className="w-20 h-20 lg:w-24 lg:h-24 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Flame size={40} className="text-amber-600 lg:hidden" />
@@ -213,7 +223,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
               )}
             </div>
 
-            {/* Action Buttons - side by side on desktop */}
+            {/* Action Buttons */}
             <div className="flex flex-col lg:flex-row gap-4 lg:justify-center lg:max-w-2xl lg:mx-auto mb-8 lg:mb-12">
               <button
                 onClick={handleShare}
@@ -228,14 +238,14 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                 className="w-full lg:w-auto lg:px-8 bg-amber-500 hover:bg-amber-600 text-stone-900 py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors"
               >
                 <Sparkles size={20} />
-                Deel een herinnering
+                {isEvent ? 'Deel je ervaring' : 'Deel een herinnering'}
               </button>
             </div>
 
             {/* Memories Grid */}
             <div>
               <h2 className="font-serif text-xl lg:text-2xl text-stone-800 mb-4 lg:mb-6 text-center">
-                Herinneringen ({gifts.length})
+                {isEvent ? 'Woorden' : 'Herinneringen'} ({gifts.length})
               </h2>
 
               {loadingGifts ? (
@@ -244,8 +254,10 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                 </div>
               ) : gifts.length === 0 ? (
                 <div className="text-center py-8 lg:py-16 text-stone-500">
-                  <p className="lg:text-lg">Nog geen herinneringen.</p>
-                  <p className="text-sm lg:text-base mt-1">Deel de link en verzamel samen herinneringen!</p>
+                  <p className="lg:text-lg">{isEvent ? 'Nog geen woorden.' : 'Nog geen herinneringen.'}</p>
+                  <p className="text-sm lg:text-base mt-1">
+                    {isEvent ? 'Deel de link en verzamel samen woorden!' : 'Deel de link en verzamel samen herinneringen!'}
+                  </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -292,7 +304,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
 
                         {/* CTA */}
                         <p className="text-amber-600 text-sm text-center font-medium">
-                          Bekijk herinnering →
+                          Bekijk woord →
                         </p>
                       </a>
 
@@ -324,7 +336,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
     );
   }
 
-  // FORM VIEW - Add a memory
+  // FORM VIEW - Add a memory/experience
   if (viewState === 'form') {
     return (
       <div className="fixed inset-0 bg-gradient-to-b from-amber-50 to-white overflow-auto">
@@ -336,7 +348,9 @@ export default function PersonPageClient({ person, adminToken }: Props) {
             </div>
             <h2 className="font-serif text-2xl text-stone-800 mb-2">Even geduld...</h2>
             <p className="text-stone-500 text-center max-w-xs">
-              We zoeken het perfecte woord voor jouw herinnering. Dit kan een minuutje duren.
+              {isEvent
+                ? 'We zoeken het perfecte woord voor jouw ervaring. Dit kan een minuutje duren.'
+                : 'We zoeken het perfecte woord voor jouw herinnering. Dit kan een minuutje duren.'}
             </p>
             <div className="mt-6 flex gap-1">
               <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -348,16 +362,18 @@ export default function PersonPageClient({ person, adminToken }: Props) {
 
         {/* Content */}
         <div className="flex flex-col items-center justify-start pt-12 md:justify-center md:pt-0 min-h-screen p-6">
-          {/* Person Name Header */}
+          {/* Header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Sparkles size={32} className="text-amber-600" />
             </div>
             <h1 className="font-serif text-2xl text-stone-800 mb-2">
-              Herinnering voor {person.name}
+              {isEvent ? person.name : `Herinnering voor ${person.name}`}
             </h1>
             <p className="text-stone-600">
-              Deel een bijzondere herinnering en ontdek welk woord erbij past.
+              {isEvent
+                ? 'Beschrijf je ervaring en ontdek welk woord erbij past.'
+                : 'Deel een bijzondere herinnering en ontdek welk woord erbij past.'}
             </p>
           </div>
 
@@ -377,62 +393,66 @@ export default function PersonPageClient({ person, adminToken }: Props) {
               />
             </div>
 
-            {/* Memory */}
+            {/* Memory / Experience */}
             <div>
               <label className="block text-sm font-medium text-stone-700 mb-2">
-                Deel je herinnering
+                {isEvent ? 'Wat neem je mee uit deze sessie?' : 'Deel je herinnering'}
               </label>
               <textarea
                 value={memory}
                 onChange={(e) => setMemory(e.target.value)}
-                placeholder="Beschrijf een bijzonder moment..."
+                placeholder={isEvent
+                  ? 'Beschrijf wat je voelt of hebt meegemaakt...'
+                  : 'Beschrijf een bijzonder moment...'}
                 className="w-full h-32 p-4 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none text-stone-800"
               />
             </div>
 
-            {/* Location */}
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">
-                Waar was dit?
-              </label>
-              {location ? (
-                <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-                  <MapPin size={24} className="text-amber-500 flex-shrink-0" />
-                  <span className="text-stone-800 font-medium flex-1">{location.name}</span>
-                  <button
-                    onClick={() => setLocation(null)}
-                    className="text-stone-400 hover:text-stone-600 text-sm"
-                  >
-                    Wijzig
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <Suspense fallback={<div className="flex items-center justify-center py-4"><Loader2 className="animate-spin text-amber-500" size={24} /></div>}>
-                    <PlacesAutocomplete onSelect={handleSelectSearchResult} />
-                  </Suspense>
-                  <div className="relative flex items-center">
-                    <div className="flex-1 h-px bg-stone-200"></div>
-                    <span className="px-3 text-xs text-stone-400">of</span>
-                    <div className="flex-1 h-px bg-stone-200"></div>
+            {/* Location - only for person type */}
+            {!isEvent && (
+              <div>
+                <label className="block text-sm font-medium text-stone-700 mb-2">
+                  Waar was dit?
+                </label>
+                {location ? (
+                  <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                    <MapPin size={24} className="text-amber-500 flex-shrink-0" />
+                    <span className="text-stone-800 font-medium flex-1">{location.name}</span>
+                    <button
+                      onClick={() => setLocation(null)}
+                      className="text-stone-400 hover:text-stone-600 text-sm"
+                    >
+                      Wijzig
+                    </button>
                   </div>
-                  <button
-                    onClick={handleGetLocation}
-                    disabled={isGettingLocation}
-                    className="w-full flex items-center justify-center gap-3 px-4 py-4 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-stone-900 font-bold rounded-xl transition-colors"
-                  >
-                    {isGettingLocation ? <Loader2 size={22} className="animate-spin" /> : <Navigation size={22} />}
-                    <span>Gebruik mijn locatie</span>
-                  </button>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Suspense fallback={<div className="flex items-center justify-center py-4"><Loader2 className="animate-spin text-amber-500" size={24} /></div>}>
+                      <PlacesAutocomplete onSelect={handleSelectSearchResult} />
+                    </Suspense>
+                    <div className="relative flex items-center">
+                      <div className="flex-1 h-px bg-stone-200"></div>
+                      <span className="px-3 text-xs text-stone-400">of</span>
+                      <div className="flex-1 h-px bg-stone-200"></div>
+                    </div>
+                    <button
+                      onClick={handleGetLocation}
+                      disabled={isGettingLocation}
+                      className="w-full flex items-center justify-center gap-3 px-4 py-4 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-stone-900 font-bold rounded-xl transition-colors"
+                    >
+                      {isGettingLocation ? <Loader2 size={22} className="animate-spin" /> : <Navigation size={22} />}
+                      <span>Gebruik mijn locatie</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Buttons */}
             <div className="space-y-3 mt-8">
               <button
                 onClick={handleGenerate}
-                disabled={isGenerating || !authorName.trim() || !memory.trim() || !location}
+                disabled={isGenerating || !authorName.trim() || !memory.trim() || (!isEvent && !location)}
                 className="w-full bg-stone-900 hover:bg-stone-800 disabled:bg-stone-300 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors shadow-lg"
               >
                 {isGenerating ? (
@@ -474,7 +494,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
             </div>
             <h2 className="font-serif text-2xl lg:text-3xl text-stone-800 mb-2">Even geduld...</h2>
             <p className="text-stone-500 text-center max-w-xs lg:text-lg">
-              We zoeken een nieuw woord voor jouw herinnering. Dit kan een minuutje duren.
+              We zoeken een nieuw woord. Dit kan een minuutje duren.
             </p>
             <div className="mt-6 flex gap-1">
               <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -520,12 +540,14 @@ export default function PersonPageClient({ person, adminToken }: Props) {
               </p>
             </div>
 
-            {/* Poem Section */}
-            <div className="bg-amber-50 rounded-2xl p-6 lg:p-10 mb-8 lg:mb-10 border border-amber-100">
-              <p className="text-stone-700 lg:text-lg leading-relaxed font-serif italic text-center whitespace-pre-line">
-                {generatedGift.poem}
-              </p>
-            </div>
+            {/* Poem Section - only for person type */}
+            {!isEvent && generatedGift.poem && (
+              <div className="bg-amber-50 rounded-2xl p-6 lg:p-10 mb-8 lg:mb-10 border border-amber-100">
+                <p className="text-stone-700 lg:text-lg leading-relaxed font-serif italic text-center whitespace-pre-line">
+                  {generatedGift.poem}
+                </p>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="flex flex-col lg:flex-row lg:justify-center gap-3 lg:gap-4">
@@ -542,7 +564,7 @@ export default function PersonPageClient({ person, adminToken }: Props) {
                 ) : (
                   <>
                     <Share2 size={20} />
-                    Bewaar herinnering
+                    Bewaar woord
                   </>
                 )}
               </button>

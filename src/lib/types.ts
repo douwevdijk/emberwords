@@ -42,7 +42,7 @@ export interface Gift {
   withPerson: string;
   authorName?: string;
   memory: string;
-  location: {
+  location?: {
     lat: number;
     lng: number;
     name: string;
@@ -53,16 +53,20 @@ export interface Gift {
   country: string;
   pronunciation?: string;
   meaning: string;
-  poem: string;
+  poem?: string;
   timestamp: number;
   personId?: string;
   hidden?: boolean;
 }
 
+export type PersonType = 'person' | 'event';
+
 export interface Person {
   id: string;
   name: string;
   description?: string;
+  type: PersonType;
+  location?: string;
   creatorEmail: string;
   adminToken: string;
   timestamp: number;
