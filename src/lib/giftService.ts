@@ -39,22 +39,24 @@ export const saveGift = async (gift: Gift): Promise<string | null> => {
   try {
     const id = `gift-${Date.now()}`;
     const docRef = doc(db, GIFTS_COLLECTION, id);
-    await setDoc(docRef, {
+    const data: Record<string, unknown> = {
       withPerson: gift.withPerson,
       authorName: gift.authorName || null,
       memory: gift.memory,
-      location: gift.location,
       word: gift.word,
       translation: gift.translation,
       explanation: gift.explanation,
       country: gift.country,
       pronunciation: gift.pronunciation || null,
       meaning: gift.meaning,
-      poem: gift.poem,
       timestamp: Date.now(),
       personId: gift.personId || null,
-      hidden: gift.hidden || false
-    });
+      hidden: gift.hidden || false,
+    };
+    if (gift.location) data.location = gift.location;
+    if (gift.poem) data.poem = gift.poem;
+
+    await setDoc(docRef, data);
     return id;
   } catch (error) {
     console.error('Error saving gift:', error);
