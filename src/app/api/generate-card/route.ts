@@ -16,14 +16,30 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { theme } = await request.json();
+    const { theme, language } = await request.json();
 
     if (!theme) {
       return NextResponse.json({ error: 'Missing theme' }, { status: 400 });
     }
 
+    const isEnglish = language === 'en';
+
     // Generate word card
-    const cardPrompt = `
+    const cardPrompt = isEnglish
+      ? `
+      Find a unique, beautiful, and culturally specific word (an existing word from a language somewhere in the world) that matches this theme or feeling: "${theme}".
+      Think of words like Saudade, Hygge, Wabi-sabi, Ubuntu.
+
+      Generate a JSON object for a card:
+      - word: The word itself (case-sensitive).
+      - country: The country or language of origin.
+      - pronunciation: Phonetic pronunciation.
+      - shortDefinition: A poetic, short definition (max 2 sentences).
+      - question: A profound reflection question for the reader that fits this word.
+
+      Write everything in English.
+    `
+      : `
       Zoek een uniek, mooi, en cultureel specifiek woord (bestaand woord uit een taal ergens op de wereld) dat past bij dit thema of gevoel: "${theme}".
       Denk aan woorden zoals Saudade, Hygge, Wabi-sabi, Ubuntu.
 
@@ -64,7 +80,19 @@ export async function POST(request: NextRequest) {
     const cardData = JSON.parse(cardText);
 
     // Generate deep dive content
-    const deepDivePrompt = `
+    const deepDivePrompt = isEnglish
+      ? `
+      You are an expert in linguistics and cultural anthropology.
+      Give me an in-depth explanation of the word "${cardData.word}" from ${cardData.country}.
+
+      The output must be JSON with the following structure:
+      - culturalContext: A rich description of the cultural background (approx. 50-80 words).
+      - philosophicalInsight: A deeper, philosophical layer of the word (approx. 30-50 words).
+      - exampleUsage: An example sentence in the original language (if applicable) with translation.
+
+      Write in English.
+    `
+      : `
       Je bent een expert in linguïstiek en culturele antropologie.
       Geef me een diepgaande uitleg van het woord "${cardData.word}" uit ${cardData.country}.
 
