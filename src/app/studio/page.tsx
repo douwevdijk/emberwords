@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Loader2, Sparkles, Check, BookOpen, Copy, Check as CheckIcon } from 'lucide-react';
+import { Loader2, Sparkles, Check, BookOpen, Copy, ExternalLink } from 'lucide-react';
 import { WordCard } from '@/lib/types';
 import { saveWord } from '@/lib/wordService';
 import { getCountryFlag } from '@/lib/countryFlags';
@@ -118,6 +118,15 @@ export default function StudioPage() {
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
+                <a
+                  href={getWordUrl(savedCard.id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 mt-3 py-3 bg-stone-900 hover:bg-stone-800 text-white rounded-xl font-bold text-sm transition-colors"
+                >
+                  <ExternalLink size={16} />
+                  See your word here
+                </a>
               </div>
 
               <button
@@ -136,7 +145,7 @@ export default function StudioPage() {
                 type="text"
                 value={themeInput}
                 onChange={(e) => setThemeInput(e.target.value)}
-                placeholder="E.g. A rainy Sunday in Japan..."
+                placeholder="E.g. Finding inner peace on a Balinese mountain..."
                 className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
               />
               <button
